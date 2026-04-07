@@ -36,9 +36,11 @@ export function AppShell() {
 
       <header className={styles.header}>
         <div className={styles.brand}>
-          <div className={styles.mark} aria-hidden>
-            WL
-          </div>
+          <img
+            src="/wesleyLedger-logo.png"
+            alt="WesleyLedger Logo"
+            className={styles.logo}
+          />
           <div className={styles.brandText}>
             <span className={styles.appName}>WesleyLedger</span>
             <span className={styles.society}>{profile.society}</span>

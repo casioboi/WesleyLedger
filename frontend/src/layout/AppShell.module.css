@@ -71,20 +71,14 @@
   min-width: 0;
 }
 
-.mark {
+.logo {
   flex-shrink: 0;
   width: 40px;
   height: 40px;
-  display: grid;
-  place-items: center;
   border-radius: 12px;
-  font-family: var(--wl-font-display);
-  font-weight: 700;
-  font-size: 0.8rem;
-  letter-spacing: 0.06em;
-  color: var(--wl-frost);
-  background: var(--wl-mark-bg);
+  object-fit: contain;
   border: 1px solid var(--wl-border);
+  background: var(--wl-mark-bg);
 }
 
 .brandText {

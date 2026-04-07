@@ -85,6 +85,11 @@ export function SplashScreen() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: reduceMotion ? 0 : 0.12 }}
             >
+              <img
+                src="/wesleyLedger-logo.png"
+                alt="WesleyLedger"
+                className={styles.titleLogo}
+              />
               WesleyLedger
             </motion.h1>
 
