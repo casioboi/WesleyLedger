@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { formatQuarterLabel } from '../lib/quarters'
+import { formatQuarterLabel, type Quarter } from '../lib/quarters'
 import { formatMinorAsGHS } from '../lib/money'
 import { remittanceFromGriMinor } from '../lib/remittance'
 import { useLedger } from '../ledger/useLedger'
