@@ -39,13 +39,13 @@ export function DashboardPage() {
   const viewLabel = `${formatQuarterLabel(year, quarter).replace(' ', '.').replace(' · ', ' ')}`
 
   const prevQuarter = () => {
-    const nextQuarter = quarter === 1 ? 4 : (quarter - 1) as const
+    const nextQuarter = quarter === 1 ? 4 : (quarter - 1) as Quarter
     const nextYear = quarter === 1 ? year - 1 : year
     setQuarter(nextYear, nextQuarter)
   }
 
   const nextQuarter = () => {
-    const nextQuarterValue = quarter === 4 ? 1 : (quarter + 1) as const
+    const nextQuarterValue = quarter === 4 ? 1 : (quarter + 1) as Quarter
     const nextYear = quarter === 4 ? year + 1 : year
     setQuarter(nextYear, nextQuarterValue)
   }
