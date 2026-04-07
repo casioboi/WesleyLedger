@@ -1,0 +1,320 @@
+.appearance {
+  margin-bottom: 1.75rem;
+  padding: 1.15rem 1.2rem;
+  border-radius: 16px;
+  border: 1px solid var(--wl-border);
+  background: var(--wl-panel);
+  text-align: left;
+}
+
+.profile {
+  margin-bottom: 1.75rem;
+  padding: 1.15rem 1.2rem;
+  border-radius: 16px;
+  border: 1px solid var(--wl-border);
+  background: var(--wl-panel);
+  text-align: left;
+}
+
+.profileTitle {
+  font-family: var(--wl-font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+  color: var(--wl-frost);
+}
+
+.profileHint {
+  margin: 0 0 1rem;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--wl-muted);
+}
+
+.dl {
+  margin: 0 0 1rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 0.5rem 1rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--wl-border);
+  font-size: 0.9rem;
+}
+
+.row:last-of-type {
+  border-bottom: none;
+}
+
+.row dt {
+  margin: 0;
+  color: var(--wl-subtle);
+  font-weight: 500;
+}
+
+.row dd {
+  margin: 0;
+  color: var(--wl-frost);
+  word-break: break-word;
+}
+
+.editLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--wl-link);
+  text-decoration: none;
+}
+
+.editLink:hover {
+  text-decoration: underline;
+}
+
+.editLink:focus-visible {
+  outline: 2px solid var(--wl-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.gri {
+  margin-bottom: 1.75rem;
+  padding: 1.15rem 1.2rem;
+  border-radius: 16px;
+  border: 1px solid var(--wl-border);
+  background: var(--wl-panel);
+  text-align: left;
+}
+
+.griToolbar {
+  margin-bottom: 0.65rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.65rem;
+}
+
+.saveBtn {
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.45rem 0.95rem;
+  border-radius: 10px;
+  border: 1px solid var(--wl-blue);
+  background: var(--wl-blue);
+  color: #fff;
+  cursor: pointer;
+}
+
+.saveBtn:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+.saveBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.saveBtn:focus-visible {
+  outline: 2px solid var(--wl-blue);
+  outline-offset: 2px;
+}
+
+.griUnsaved {
+  margin: 0 0 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--wl-link);
+}
+
+.resetBtn {
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--wl-border);
+  background: var(--wl-surface, transparent);
+  color: var(--wl-frost);
+  cursor: pointer;
+}
+
+.resetBtn:hover {
+  border-color: var(--wl-blue);
+  color: var(--wl-link);
+}
+
+.resetBtn:focus-visible {
+  outline: 2px solid var(--wl-blue);
+  outline-offset: 2px;
+}
+
+.griGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.griGroup {
+  border: 1px solid var(--wl-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--wl-surface, transparent);
+}
+
+.griGroupHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem 1rem;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--wl-border);
+}
+
+.griSectionTitle {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--wl-frost);
+  font-family: var(--wl-font-display);
+}
+
+.griSectionActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.sectionBtn {
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid var(--wl-border);
+  background: transparent;
+  color: var(--wl-muted);
+  cursor: pointer;
+}
+
+.sectionBtn:hover {
+  color: var(--wl-frost);
+  border-color: var(--wl-subtle);
+}
+
+.sectionBtn:focus-visible {
+  outline: 2px solid var(--wl-blue);
+  outline-offset: 2px;
+}
+
+.griLineList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.griLineRow {
+  border-bottom: 1px solid var(--wl-border);
+}
+
+.griLineRow:last-child {
+  border-bottom: none;
+}
+
+.griLineLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.55rem 0.85rem;
+  cursor: pointer;
+  font-size: 0.86rem;
+  color: var(--wl-frost);
+}
+
+.griLineLabel:hover {
+  background: color-mix(in srgb, var(--wl-blue) 6%, transparent);
+}
+
+.griLineText {
+  flex: 1;
+  line-height: 1.35;
+}
+
+.griToggle {
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: var(--wl-blue);
+  flex-shrink: 0;
+}
+
+.cloud {
+  margin-bottom: 1.75rem;
+  padding: 1.15rem 1.2rem;
+  border-radius: 16px;
+  border: 1px solid var(--wl-border);
+  background: var(--wl-panel);
+  text-align: left;
+}
+
+.cloudSignedIn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.cloudEmail {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--wl-frost);
+}
+
+.cloudActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.65rem;
+}
+
+.cloudForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  max-width: 22rem;
+}
+
+.cloudLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--wl-muted);
+}
+
+.cloudInput {
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 500;
+  padding: 0.5rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid var(--wl-border);
+  background: var(--wl-surface, transparent);
+  color: var(--wl-frost);
+}
+
+.cloudInput:focus-visible {
+  outline: 2px solid var(--wl-blue);
+  outline-offset: 2px;
+}
+
+.code {
+  font-size: 0.82em;
+  padding: 0.12rem 0.35rem;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--wl-frost) 8%, transparent);
+  word-break: break-all;
+}
