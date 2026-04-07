@@ -68,21 +68,6 @@
   line-height: 1.65;
 }
 
-.envDebug {
-  display: grid;
-  gap: 0.25rem;
-  padding: 0.9rem 1rem;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--wl-muted);
-  font-size: 0.92rem;
-}
-
-.envDebug strong {
-  color: var(--wl-frost);
-}
-
 .tabs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -135,6 +120,41 @@ input {
 input:focus {
   outline: 2px solid rgba(103, 121, 255, 0.32);
   border-color: rgba(103, 121, 255, 0.5);
+}
+
+.passwordField {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordField input {
+  padding-right: 3rem;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: none;
+  color: var(--wl-muted);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: color 0.2s ease;
+}
+
+.passwordToggle:hover {
+  color: var(--wl-frost);
+}
+
+.passwordToggle:focus {
+  outline: 2px solid rgba(103, 121, 255, 0.32);
+  outline-offset: 2px;
 }
 
 .error,
