@@ -1,0 +1,118 @@
+.page {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.card {
+  padding: 1.1rem 1.1rem 1.2rem;
+  border-radius: 16px;
+  border: 1px solid var(--wl-blue);
+  background: color-mix(in srgb, var(--wl-blue) 8%, var(--wl-panel));
+}
+
+.title {
+  margin: 0 0 0.35rem;
+  font-family: var(--wl-font-display);
+  font-size: clamp(1.25rem, 2.6vw, 1.5rem);
+}
+
+.lead {
+  margin: 0 0 0.9rem;
+  color: var(--wl-muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: baseline;
+  margin: 0 0 0.9rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--wl-border);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.totalRow span {
+  font-size: 0.85rem;
+  color: var(--wl-subtle);
+}
+
+.totalRow strong {
+  font-family: var(--wl-font-display);
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid var(--wl-border);
+  margin-bottom: 1rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.83rem;
+}
+
+.table th,
+.table td {
+  padding: 0.55rem 0.65rem;
+  text-align: left;
+  border-bottom: 1px solid var(--wl-border);
+  vertical-align: top;
+}
+
+.table th {
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--wl-subtle);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.num {
+  text-align: right;
+  white-space: nowrap;
+  font-family: var(--wl-font-display);
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.confirmBtn {
+  flex: 1;
+  min-width: 13rem;
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--wl-red) 0%, #9f1830 100%);
+  box-shadow: 0 4px 18px rgba(196, 30, 58, 0.3);
+}
+
+.backBtn {
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--wl-border);
+  background: transparent;
+  color: var(--wl-muted);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}

@@ -191,3 +191,66 @@ input:focus {
   opacity: 0.65;
   cursor: not-allowed;
 }
+
+[data-theme='light'] .ambient {
+  background: radial-gradient(circle at top left, rgba(29, 78, 216, 0.1), transparent 36%),
+    radial-gradient(circle at bottom right, rgba(185, 28, 60, 0.12), transparent 30%);
+}
+
+[data-theme='light'] .card {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  box-shadow: 0 24px 56px rgba(15, 23, 42, 0.12);
+}
+
+[data-theme='light'] .badge {
+  color: rgba(15, 23, 42, 0.65);
+  background: rgba(248, 250, 252, 0.95);
+  border-color: rgba(15, 23, 42, 0.12);
+}
+
+[data-theme='light'] .cardHeader p {
+  color: rgba(15, 23, 42, 0.72);
+}
+
+[data-theme='light'] .tab {
+  background: rgba(248, 250, 252, 0.92);
+  border-color: rgba(15, 23, 42, 0.12);
+  color: rgba(15, 23, 42, 0.82);
+}
+
+[data-theme='light'] .active {
+  color: #fff;
+}
+
+[data-theme='light'] label {
+  color: rgba(15, 23, 42, 0.72);
+}
+
+[data-theme='light'] input {
+  border-color: rgba(15, 23, 42, 0.14);
+  background: rgba(255, 255, 255, 0.98);
+  color: #0f172a;
+}
+
+[data-theme='light'] input::placeholder {
+  color: rgba(15, 23, 42, 0.42);
+}
+
+[data-theme='light'] .passwordToggle {
+  color: rgba(15, 23, 42, 0.55);
+}
+
+[data-theme='light'] .passwordToggle:hover {
+  color: rgba(15, 23, 42, 0.88);
+}
+
+[data-theme='light'] .error {
+  background: rgba(185, 28, 60, 0.12);
+  color: #9f1239;
+}
+
+[data-theme='light'] .info {
+  background: rgba(29, 78, 216, 0.1);
+  color: #1e3a8a;
+}

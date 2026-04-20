@@ -454,6 +454,12 @@
   color: var(--wl-muted);
 }
 
+.reviewBatchTotal {
+  margin: 0 0 0.85rem;
+  font-size: 0.9rem;
+  color: var(--wl-frost);
+}
+
 .reviewDl {
   margin: 0 0 1rem;
 }
@@ -623,6 +629,53 @@
   text-align: left;
 }
 
+.groupedEntries {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.dateGroup {
+  border: 1px solid var(--wl-border);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--wl-panel) 72%, transparent);
+  overflow: hidden;
+}
+
+.dateGroupHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.45rem 0.9rem;
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid var(--wl-border);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.dateTitle {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--wl-frost);
+}
+
+.dateSummary {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--wl-muted);
+}
+
+.kindHeading {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--wl-border);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--wl-subtle);
+  background: rgba(255, 255, 255, 0.02);
+}
+
 .empty {
   margin: 0;
   padding: 1.5rem;
@@ -636,6 +689,7 @@
   overflow-x: auto;
   border-radius: 14px;
   border: 1px solid var(--wl-border);
+  margin: 0.7rem;
 }
 
 .table {

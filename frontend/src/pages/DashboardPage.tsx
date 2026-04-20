@@ -35,6 +35,11 @@ export function DashboardPage() {
     () => remittanceFromGriMinor(totalsInSelectedQuarter.griIncomeMinor),
     [totalsInSelectedQuarter.griIncomeMinor]
   )
+  const griPaidMinor =
+    rem.connexionalMinor +
+    rem.dioceseMinor +
+    rem.circuitMinor +
+    rem.emergencyMinor
 
   const viewLabel = `${formatQuarterLabel(year, quarter).replace(' ', '.').replace(' · ', ' ')}`
 
@@ -70,6 +75,12 @@ export function DashboardPage() {
       accent:
         totalsInSelectedQuarter.surplusMinor >= 0 ? ('blue' as const) : ('red' as const),
     },
+    {
+      label: 'GRI amount paid',
+      value: formatMinorAsGHS(griPaidMinor),
+      hint: 'GHS',
+      accent: 'neutral' as const,
+    },
   ]
 
   return (
@@ -82,7 +93,7 @@ export function DashboardPage() {
       >
         <div className={styles.heroHeader}>
           <div>
-            <p className={styles.greet}>Good day, Treasurer</p>
+            <p className={styles.greet}>Good day, Steward</p>
             <h1 className={styles.headline}>Overview</h1>
           </div>
           <div className={styles.quarterSwitcher}>

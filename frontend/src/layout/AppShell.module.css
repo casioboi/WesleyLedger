@@ -119,6 +119,10 @@
   gap: 0.5rem;
 }
 
+.quarterPicker {
+  position: relative;
+}
+
 .signOut {
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.04);
@@ -137,6 +141,10 @@
 }
 
 .pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -146,6 +154,59 @@
   color: var(--wl-muted);
   border: 1px solid var(--wl-border);
   background: var(--wl-glass);
+  cursor: pointer;
+}
+
+.pill:hover {
+  color: var(--wl-frost);
+}
+
+.pill::after {
+  content: '▾';
+  margin-left: 0.45rem;
+  font-size: 0.72em;
+  opacity: 0.9;
+}
+
+.quarterMenu {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  min-width: 14rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.35rem;
+  border-radius: 12px;
+  border: 1px solid var(--wl-border);
+  background: var(--wl-header-bg);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  z-index: 25;
+}
+
+.quarterOption {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--wl-subtle);
+  text-align: left;
+  border-radius: 8px;
+  padding: 0.5rem 0.55rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.quarterOption:hover {
+  color: var(--wl-frost);
+  background: var(--wl-nav-hover-bg);
+}
+
+.quarterOptionActive {
+  color: var(--wl-frost);
+  border-color: var(--wl-border);
+  background: var(--wl-nav-active-bg);
 }
 
 .body {

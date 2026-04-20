@@ -48,6 +48,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (sb) await sb.auth.signOut()
   }, [])
 
+  const resetPassword = useCallback(async (email: string) => {
+    const sb = getSupabase()
+    if (!sb) return { error: new Error('Cloud sync is not configured.') }
+    const { error } = await sb.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/auth/reset-password`,
+    })
+    return { error: error ? new Error(error.message) : null }
+  }, [])
+
   const value = useMemo(
     () => ({
       session,
@@ -56,8 +65,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signInWithEmail,
       signUpWithEmail,
       signOut,
+      resetPassword,
     }),
-    [session, loading, signInWithEmail, signUpWithEmail, signOut]
+    [session, loading, signInWithEmail, signUpWithEmail, signOut, resetPassword]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

@@ -9,11 +9,11 @@ import styles from './AuthPage.module.css'
 
 export function AuthPage() {
   const navigate = useNavigate()
-  const { session, loading, configured, signInWithEmail, signUpWithEmail } = useAuth()
+  const { session, loading, configured, signInWithEmail, signUpWithEmail, resetPassword } = useAuth()
   const { isComplete, saveProfile, profile } = useChurchProfile()
   const { showToast } = useToast()
 
-  const [mode, setMode] = useState<'signIn' | 'signUp'>('signIn')
+  const [mode, setMode] = useState<'signIn' | 'signUp' | 'reset'>('signIn')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -65,6 +65,18 @@ export function AuthPage() {
       }
       showToast('Signed in successfully.', 'success')
       navigate('/app', { replace: true })
+      return
+    }
+
+    if (mode === 'reset') {
+      const { error: resetError } = await resetPassword(trimmedEmail)
+      setBusy(false)
+      if (resetError) {
+        setError(resetError.message)
+        return
+      }
+      setInfo('Password reset email sent. Check your inbox and follow the instructions.')
+      setMode('signIn')
       return
     }
 
@@ -126,11 +138,17 @@ export function AuthPage() {
       >
         <div className={styles.cardHeader}>
           <span className={styles.badge}>Account</span>
-          <h1>{mode === 'signIn' ? 'Sign in to WesleyLedger' : 'Create a new account'}</h1>
+          <h1>
+            {mode === 'signIn' ? 'Sign in to WesleyLedger' :
+             mode === 'signUp' ? 'Create a new account' :
+             'Reset your password'}
+          </h1>
           <p>
             {mode === 'signIn'
               ? 'Use your email and password to restore your secure ledger and sync to Supabase.'
-              : 'Create your account and add your society details as part of onboarding.'}
+              : mode === 'signUp'
+              ? 'Create your account and add your society details as part of onboarding.'
+              : 'Enter your email address and we\'ll send you a link to reset your password.'}
           </p>
         </div>
 
@@ -157,6 +175,17 @@ export function AuthPage() {
           >
             Create account
           </button>
+          <button
+            type="button"
+            className={`${styles.tab} ${mode === 'reset' ? styles.active : ''}`}
+            onClick={() => {
+              setMode('reset')
+              setError(null)
+              setInfo(null)
+            }}
+          >
+            Reset password
+          </button>
         </div>
 
         <form className={styles.form} onSubmit={onSubmit} noValidate>
@@ -172,28 +201,46 @@ export function AuthPage() {
             />
           </div>
 
-          <div className={styles.field}>
-            <label htmlFor="auth-password">Password</label>
-            <div className={styles.passwordField}>
-              <input
-                id="auth-password"
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter a secure password"
-                required
-                minLength={6}
-              />
+          {mode !== 'reset' && (
+            <div className={styles.field}>
+              <label htmlFor="auth-password">Password</label>
+              <div className={styles.passwordField}>
+                <input
+                  id="auth-password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter a secure password"
+                  required
+                  minLength={6}
+                />
+                <button
+                  type="button"
+                  className={styles.passwordToggle}
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {mode === 'signIn' && (
+            <div className={styles.field}>
               <button
                 type="button"
-                className={styles.passwordToggle}
-                onClick={() => setShowPassword(!showPassword)}
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                className={styles.forgotPassword}
+                onClick={() => {
+                  setMode('reset')
+                  setError(null)
+                  setInfo(null)
+                }}
               >
-                {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                Forgot your password?
               </button>
             </div>
-          </div>
+          )}
 
           {mode === 'signUp' ? (
             <>
@@ -242,7 +289,9 @@ export function AuthPage() {
           {info ? <div className={styles.info}>{info}</div> : null}
 
           <button type="submit" className={styles.submit} disabled={busy}>
-            {mode === 'signIn' ? 'Continue to app' : 'Create account'}
+            {mode === 'signIn' ? 'Continue to app' :
+             mode === 'signUp' ? 'Create account' :
+             'Send reset email'}
           </button>
         </form>
       </motion.div>

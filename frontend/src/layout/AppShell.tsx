@@ -1,15 +1,17 @@
+import { useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ThemeToggle } from '../components/ThemeToggle'
 import { useChurchProfile } from '../context/useChurchProfile'
 import { useAuth } from '../context/useAuth'
-import { formatQuarterLabel } from '../lib/quarters'
+import { formatQuarterLabel, type Quarter } from '../lib/quarters'
 import { useLedger } from '../ledger/useLedger'
 import styles from './AppShell.module.css'
 
 const nav = [
   { to: '/app', end: true, label: 'Home', icon: IconHome },
   { to: '/app/ledger', end: false, label: 'Ledger', icon: IconLedger },
+  { to: '/app/entries', end: false, label: 'Entries', icon: IconEntries },
   { to: '/app/reports', end: false, label: 'Reports', icon: IconReports },
   { to: '/app/settings', end: false, label: 'Settings', icon: IconSettings },
 ] as const
@@ -18,8 +20,28 @@ export function AppShell() {
   const navigate = useNavigate()
   const location = useLocation()
   const { profile } = useChurchProfile()
-  const { year, quarter } = useLedger()
+  const { year, quarter, setQuarter } = useLedger()
   const { signOut } = useAuth()
+  const [quarterMenuOpen, setQuarterMenuOpen] = useState(false)
+  const quarterMenuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!quarterMenuOpen) return
+    function onPointerDown(e: MouseEvent) {
+      if (!quarterMenuRef.current?.contains(e.target as Node)) {
+        setQuarterMenuOpen(false)
+      }
+    }
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') setQuarterMenuOpen(false)
+    }
+    window.addEventListener('mousedown', onPointerDown)
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      window.removeEventListener('mousedown', onPointerDown)
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [quarterMenuOpen])
 
   async function handleSignOut() {
     await signOut()
@@ -51,7 +73,40 @@ export function AppShell() {
         </div>
         <div className={styles.headerActions}>
           <ThemeToggle variant="compact" />
-          <span className={styles.pill}>{formatQuarterLabel(year, quarter)}</span>
+          <div className={styles.quarterPicker} ref={quarterMenuRef}>
+            <button
+              type="button"
+              className={styles.pill}
+              onClick={() => setQuarterMenuOpen((open) => !open)}
+              aria-expanded={quarterMenuOpen}
+              aria-haspopup="menu"
+              aria-label="Choose reporting quarter"
+            >
+              {formatQuarterLabel(year, quarter)}
+            </button>
+            {quarterMenuOpen ? (
+              <div className={styles.quarterMenu} role="menu" aria-label="Quarter list">
+                {([1, 2, 3, 4] as const).map((q) => {
+                  const active = quarter === q
+                  return (
+                    <button
+                      key={q}
+                      type="button"
+                      role="menuitemradio"
+                      aria-checked={active}
+                      className={`${styles.quarterOption} ${active ? styles.quarterOptionActive : ''}`}
+                      onClick={() => {
+                        setQuarter(year, q as Quarter)
+                        setQuarterMenuOpen(false)
+                      }}
+                    >
+                      {formatQuarterLabel(year, q)}
+                    </button>
+                  )
+                })}
+              </div>
+            ) : null}
+          </div>
           <button type="button" className={styles.signOut} onClick={handleSignOut}>
             Sign out
           </button>
@@ -133,6 +188,15 @@ function IconReports({ className }: { className?: string }) {
     <svg className={className} width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
       <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
+    </svg>
+  )
+}
+
+function IconEntries({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" />
+      <path d="M7 6v12" opacity="0.7" />
     </svg>
   )
 }
