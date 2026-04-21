@@ -91,6 +91,12 @@
   border-color: transparent;
 }
 
+.tab.active {
+  background: linear-gradient(135deg, var(--wl-blue), var(--wl-red));
+  color: #fff;
+  border-color: transparent;
+}
+
 .form {
   display: grid;
   gap: 1rem;
@@ -157,6 +163,29 @@ input:focus {
   outline-offset: 2px;
 }
 
+.forgotPassword {
+  width: fit-content;
+  border: none;
+  background: transparent;
+  color: var(--wl-link);
+  font-weight: 600;
+  font-size: 0.86rem;
+  padding: 0.15rem 0;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+  cursor: pointer;
+}
+
+.forgotPassword:hover {
+  color: var(--wl-frost);
+}
+
+.forgotPassword:focus-visible {
+  outline: 2px solid rgba(103, 121, 255, 0.32);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
 .error,
 .info {
   border-radius: 18px;
@@ -219,8 +248,10 @@ input:focus {
   color: rgba(15, 23, 42, 0.82);
 }
 
-[data-theme='light'] .active {
+[data-theme='light'] .tab.active {
+  background: linear-gradient(135deg, var(--wl-blue), var(--wl-red));
   color: #fff;
+  border-color: transparent;
 }
 
 [data-theme='light'] label {
@@ -252,5 +283,13 @@ input:focus {
 
 [data-theme='light'] .info {
   background: rgba(29, 78, 216, 0.1);
+  color: #1e3a8a;
+}
+
+[data-theme='light'] .forgotPassword {
+  color: #1d4ed8;
+}
+
+[data-theme='light'] .forgotPassword:hover {
   color: #1e3a8a;
 }

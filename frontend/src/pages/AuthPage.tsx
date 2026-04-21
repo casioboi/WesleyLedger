@@ -24,16 +24,6 @@ export function AuthPage() {
   const [info, setInfo] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
 
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-
-  useEffect(() => {
-    console.group('[WesleyLedger] Supabase env check')
-    console.log('VITE_SUPABASE_URL:', supabaseUrl ? supabaseUrl : '<missing>')
-    console.log('VITE_SUPABASE_ANON_KEY present:', Boolean(supabaseAnonKey))
-    console.groupEnd()
-  }, [supabaseUrl, supabaseAnonKey])
-
   useEffect(() => {
     if (loading) return
     if (session) {
