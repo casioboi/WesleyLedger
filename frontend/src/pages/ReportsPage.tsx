@@ -1,5 +1,6 @@
-import { useMemo, useRef, useState } from 'react'
+﻿import { useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Capacitor } from '@capacitor/core'
 import { useChurchProfile } from '../context/useChurchProfile'
 import { useToast } from '../context/ToastContext'
 import { useGriEligibility } from '../gri/useGriEligibility'
@@ -22,7 +23,7 @@ export function ReportsPage() {
     return buildQuarterReport(transactions, startIso, endIso, resolveIncomeGriEligible)
   }, [transactions, year, quarter, resolveIncomeGriEligible])
 
-  async function handlePdf() {
+  async function handlePdf(silent = false) {
     const el = sheetRef.current
     if (!el) return
     setPdfBusy(true)
@@ -31,7 +32,7 @@ export function ReportsPage() {
       const safeSociety = profile.society.replace(/[^\w\s-]/g, '').slice(0, 40) || 'Society'
       const fname = `WesleyLedger-${safeSociety}-Q${quarter}-${year}.pdf`
       await exportReportToPdf(el, fname)
-      showToast('PDF downloaded.')
+      if (!silent) showToast('PDF downloaded.')
     } catch {
       showToast('Could not create the PDF. Try again or use Print.', 'error')
     } finally {
@@ -39,9 +40,17 @@ export function ReportsPage() {
     }
   }
 
-  function handlePrint() {
+  async function handlePrint() {
+    if (Capacitor.isNativePlatform()) {
+      await handlePdf(true)
+      showToast(
+        'Print dialog is not available inside the mobile app. Open the generated PDF and print from your PDF viewer.',
+        'info'
+      )
+      return
+    }
     window.print()
-    showToast('Print dialog opened — use your browser’s controls to print or save.', 'info')
+    showToast('Print dialog opened - use your browser controls to print or save.', 'info')
   }
 
   return (
@@ -58,7 +67,7 @@ export function ReportsPage() {
           </p>
         </div>
         <div className={styles.toolbar}>
-          <button type="button" className={styles.btnSecondary} onClick={handlePrint}>
+          <button type="button" className={styles.btnSecondary} onClick={() => void handlePrint()}>
             Print
           </button>
           <button
@@ -67,7 +76,7 @@ export function ReportsPage() {
             onClick={() => void handlePdf()}
             disabled={pdfBusy}
           >
-            {pdfBusy ? 'Building PDF…' : 'Download PDF'}
+            {pdfBusy ? 'Building PDF...' : 'Download PDF'}
           </button>
         </div>
       </header>

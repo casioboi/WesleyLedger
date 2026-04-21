@@ -194,12 +194,18 @@
 
 @media print {
   .sheet {
+    width: 210mm;
+    min-width: 210mm;
     max-width: none;
     padding: 12mm;
     background: #fff !important;
     color: #0f172a !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+  }
+
+  .columns {
+    grid-template-columns: 1fr 1fr !important;
   }
 
   .colTitle {
