@@ -17,6 +17,11 @@ import {
   setLedgerTransactions,
   subscribeLedgerTransactions,
 } from './ledgerTransactionsStore'
+import {
+  getArchivedLedgerTransactionsSnapshot,
+  setArchivedLedgerTransactions,
+  subscribeArchivedLedgerTransactions,
+} from './ledgerArchiveStore'
 
 function newTxId(): string {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
@@ -31,6 +36,11 @@ export function LedgerProvider({ children }: { children: ReactNode }) {
   const transactions = useSyncExternalStore(
     subscribeLedgerTransactions,
     getLedgerTransactionsSnapshot,
+    () => []
+  )
+  const archivedTransactions = useSyncExternalStore(
+    subscribeArchivedLedgerTransactions,
+    getArchivedLedgerTransactionsSnapshot,
     () => []
   )
 
@@ -73,6 +83,58 @@ export function LedgerProvider({ children }: { children: ReactNode }) {
     setLedgerTransactions(prev.filter((t) => t.id !== id))
   }, [])
 
+  const archiveTransaction = useCallback((id: string) => {
+    const prev = getLedgerTransactionsSnapshot()
+    const found = prev.find((t) => t.id === id)
+    if (!found) return false
+
+    setLedgerTransactions(prev.filter((t) => t.id !== id))
+    const archivedPrev = getArchivedLedgerTransactionsSnapshot()
+    setArchivedLedgerTransactions([{ ...found, archivedAt: new Date().toISOString() }, ...archivedPrev])
+    return true
+  }, [])
+
+  const restoreArchivedTransaction = useCallback((id: string) => {
+    const archivedPrev = getArchivedLedgerTransactionsSnapshot()
+    const found = archivedPrev.find((t) => t.id === id)
+    if (!found) return false
+
+    setArchivedLedgerTransactions(archivedPrev.filter((t) => t.id !== id))
+    const activePrev = getLedgerTransactionsSnapshot()
+    const existingIndex = activePrev.findIndex((t) => t.id === id)
+    if (existingIndex >= 0) {
+      const next = [...activePrev]
+      next[existingIndex] = {
+        id: found.id,
+        dateIso: found.dateIso,
+        kind: found.kind,
+        lineId: found.lineId,
+        amountMinor: found.amountMinor,
+        note: found.note,
+        createdAt: found.createdAt,
+      }
+      setLedgerTransactions(next)
+      return true
+    }
+    setLedgerTransactions([
+      ...activePrev,
+      {
+        id: found.id,
+        dateIso: found.dateIso,
+        kind: found.kind,
+        lineId: found.lineId,
+        amountMinor: found.amountMinor,
+        note: found.note,
+        createdAt: found.createdAt,
+      },
+    ])
+    return true
+  }, [])
+
+  const clearArchivedTransactions = useCallback(() => {
+    setArchivedLedgerTransactions([])
+  }, [])
+
   const totalsInSelectedQuarter = useMemo(() => {
     const { startIso, endIso } = quarterDateRangeIso(year, quarter)
     return computeTotalsForRange(transactions, startIso, endIso, resolveIncomeGriEligible)
@@ -81,19 +143,27 @@ export function LedgerProvider({ children }: { children: ReactNode }) {
   const value = useMemo(
     () => ({
       transactions,
+      archivedTransactions,
       year,
       quarter,
       setQuarter,
       addTransaction,
+      archiveTransaction,
+      restoreArchivedTransaction,
+      clearArchivedTransactions,
       removeTransaction,
       totalsInSelectedQuarter,
     }),
     [
       transactions,
+      archivedTransactions,
       year,
       quarter,
       setQuarter,
       addTransaction,
+      archiveTransaction,
+      restoreArchivedTransaction,
+      clearArchivedTransactions,
       removeTransaction,
       totalsInSelectedQuarter,
     ]

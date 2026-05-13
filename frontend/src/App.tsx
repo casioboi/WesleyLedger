@@ -15,6 +15,7 @@ import { AppShell } from './layout/AppShell'
 import { ChurchProfileSetupPage } from './pages/ChurchProfileSetupPage'
 import { DashboardPage } from './pages/DashboardPage'
 import { EntriesPage } from './pages/EntriesPage'
+import { ArchivePage } from './pages/ArchivePage'
 import { LedgerPage } from './pages/LedgerPage'
 import { LedgerReviewPage } from './pages/LedgerReviewPage'
 import { ReportsPage } from './pages/ReportsPage'
@@ -48,6 +49,7 @@ export default function App() {
                 <Route path="ledger" element={<LedgerPage />} />
                 <Route path="ledger/review" element={<LedgerReviewPage />} />
                 <Route path="entries" element={<EntriesPage />} />
+                <Route path="archive" element={<ArchivePage />} />
                 <Route path="reports" element={<ReportsPage />} />
                 <Route path="settings" element={<SettingsPage />} />
               </Route>

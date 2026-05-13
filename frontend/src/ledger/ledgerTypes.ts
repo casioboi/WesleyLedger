@@ -9,6 +9,10 @@ export type LedgerTransaction = {
   createdAt: string
 }
 
+export type ArchivedLedgerTransaction = LedgerTransaction & {
+  archivedAt: string
+}
+
 export type QuarterTotals = {
   incomeMinor: number
   expenditureMinor: number

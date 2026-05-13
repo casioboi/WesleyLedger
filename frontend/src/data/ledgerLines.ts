@@ -16,7 +16,8 @@ const gri = (v: boolean) => v
 
 export const INCOME_LINES: LedgerLineDef[] = [
   // 1. OFFERTORY
-  { id: 'i1-1', sectionId: 'inc-1', sectionTitle: '1. Offertory', label: 'Sunday Offertory (Adult & Children)', defaultGriEligible: gri(true) },
+  { id: 'i1-1', sectionId: 'inc-1', sectionTitle: '1. Offertory', label: 'Sunday Offertory (Adult)', defaultGriEligible: gri(true) },
+  { id: 'i1-1b', sectionId: 'inc-1', sectionTitle: '1. Offertory', label: 'Sunday Offertory (Children)', defaultGriEligible: gri(true) },
   { id: 'i1-2', sectionId: 'inc-1', sectionTitle: '1. Offertory', label: 'Weekdays Offertory (other than Sunday)', defaultGriEligible: gri(true) },
   { id: 'i1-3', sectionId: 'inc-1', sectionTitle: '1. Offertory', label: 'Kofi and Ama', defaultGriEligible: gri(true) },
   { id: 'i1-4', sectionId: 'inc-1', sectionTitle: '1. Offertory', label: 'Special Offering/Sombi', defaultGriEligible: gri(true) },

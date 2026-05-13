@@ -3,6 +3,10 @@
 }
 
 .hero {
+  padding: 1.15rem 1.2rem;
+  border-radius: 16px;
+  border: 1px solid var(--wl-border);
+  background: var(--wl-panel);
   margin-bottom: 1.5rem;
 }
 
@@ -31,18 +35,18 @@
 .quarterLabel {
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--wl-frost);
+  color: var(--wl-blue);
   padding: 0.55rem 0.85rem;
   border-radius: 999px;
   border: 1px solid var(--wl-border);
-  background: var(--wl-panel);
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .quarterButton {
   border: 1px solid var(--wl-border);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--wl-frost);
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--wl-blue);
   padding: 0.55rem 0.85rem;
   font-weight: 600;
   cursor: pointer;
@@ -50,8 +54,8 @@
 }
 
 .quarterButton:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.18);
+  background: #dbeafe;
+  border-color: var(--wl-blue);
 }
 
 .greet {
@@ -67,10 +71,7 @@
   font-weight: 700;
   letter-spacing: -0.03em;
   margin: 0 0 0.5rem;
-  background: var(--wl-headline-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--wl-frost);
 }
 
 .lead {
@@ -104,22 +105,24 @@
   padding: 1rem 1.1rem;
   border-radius: 16px;
   border: 1px solid var(--wl-border);
-  background: var(--wl-panel);
-  backdrop-filter: blur(8px);
+  background: #ffffff;
+  backdrop-filter: none;
+  color: #0f172a;
 }
 
 .stat_blue {
-  border-color: rgba(37, 99, 235, 0.25);
-  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.08) inset;
+  border-color: rgba(37, 99, 235, 0.35);
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.12) inset;
 }
 
 .stat_red {
-  border-color: rgba(196, 30, 58, 0.28);
-  box-shadow: 0 0 0 1px rgba(196, 30, 58, 0.08) inset;
+  border-color: rgba(196, 30, 58, 0.3);
+  box-shadow: 0 0 0 1px rgba(196, 30, 58, 0.1) inset;
 }
 
 .stat_neutral {
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(234, 179, 8, 0.45);
+  box-shadow: 0 0 0 1px rgba(234, 179, 8, 0.12) inset;
 }
 
 .statLabel {
@@ -128,7 +131,7 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--wl-subtle);
+  color: rgba(15, 23, 42, 0.72);
   margin-bottom: 0.45rem;
 }
 
@@ -142,7 +145,7 @@
 .statHint {
   font-size: 0.75rem;
   font-weight: 500;
-  color: var(--wl-subtle);
+  color: rgba(15, 23, 42, 0.62);
   margin-left: 0.15rem;
 }
 
@@ -152,7 +155,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--wl-subtle);
+  color: var(--wl-blue);
   margin: 0 0 0.75rem;
 }
 
@@ -178,7 +181,8 @@
   text-decoration: none;
   color: inherit;
   border: 1px solid var(--wl-border);
-  background: rgba(255, 255, 255, 0.04);
+  background: #ffffff;
+  color: #0f172a;
   transition:
     transform 0.2s ease,
     border-color 0.2s ease,
@@ -187,8 +191,8 @@
 
 .actionCard:hover {
   transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--wl-blue);
+  background: #eff6ff;
 }
 
 .actionCard:active {
@@ -202,8 +206,8 @@
   display: grid;
   place-items: center;
   border-radius: 12px;
-  background: var(--wl-action-icon-bg);
-  color: var(--wl-frost);
+  background: #dbeafe;
+  color: var(--wl-blue);
 }
 
 .actionText {
@@ -221,7 +225,7 @@
 
 .actionDesc {
   font-size: 0.82rem;
-  color: var(--wl-subtle);
+  color: rgba(15, 23, 42, 0.7);
   line-height: 1.35;
 }
 
@@ -233,19 +237,20 @@
 .remittance {
   padding: 1.15rem 1.2rem;
   border-radius: 16px;
-  border: 1px dashed rgba(255, 255, 255, 0.12);
-  background: rgba(10, 22, 40, 0.4);
+  border: 1px solid var(--wl-border);
+  background: #ffffff;
+  color: #0f172a;
 }
 
 .remittanceNote {
   margin: 0 0 1rem;
   font-size: 0.88rem;
   line-height: 1.5;
-  color: var(--wl-muted);
+  color: rgba(15, 23, 42, 0.74);
 }
 
 .remittanceNote strong {
-  color: rgba(240, 244, 250, 0.9);
+  color: #0f172a;
   font-weight: 600;
 }
 
@@ -260,13 +265,13 @@
   align-items: baseline;
   gap: 1rem;
   font-size: 0.88rem;
-  color: var(--wl-muted);
+  color: rgba(15, 23, 42, 0.74);
 }
 
 .remittanceVal {
   font-family: var(--wl-font-display);
   font-weight: 600;
-  color: var(--wl-frost);
+  color: #0f172a;
   white-space: nowrap;
 }
 

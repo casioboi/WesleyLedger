@@ -12,6 +12,7 @@ const nav = [
   { to: '/app', end: true, label: 'Home', icon: IconHome },
   { to: '/app/ledger', end: false, label: 'Ledger', icon: IconLedger },
   { to: '/app/entries', end: false, label: 'Entries', icon: IconEntries },
+  { to: '/app/archive', end: false, label: 'Archive', icon: IconArchive },
   { to: '/app/reports', end: false, label: 'Reports', icon: IconReports },
   { to: '/app/settings', end: false, label: 'Settings', icon: IconSettings },
 ] as const
@@ -197,6 +198,16 @@ function IconEntries({ className }: { className?: string }) {
     <svg className={className} width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
       <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" />
       <path d="M7 6v12" opacity="0.7" />
+    </svg>
+  )
+}
+
+function IconArchive({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <rect x="3" y="4" width="18" height="5" rx="1.5" />
+      <path d="M5 9v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9" />
+      <path d="M10 13h4" strokeLinecap="round" />
     </svg>
   )
 }

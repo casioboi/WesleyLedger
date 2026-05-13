@@ -31,12 +31,26 @@ export function LedgerPage() {
   const [entryDateIso, setEntryDateIso] = useState(() => todayIso())
   const [amountByLine, setAmountByLine] = useState<Record<string, string>>({})
   const [noteByLine, setNoteByLine] = useState<Record<string, string>>({})
+  const [categoryQuery, setCategoryQuery] = useState('')
   const [formError, setFormError] = useState<string | null>(null)
 
   const groups = useMemo(
     () => (kind === 'income' ? incomeLineGroups() : expenditureLineGroups()),
     [kind]
   )
+  const visibleGroups = useMemo(() => {
+    const query = categoryQuery.trim().toLowerCase()
+    if (query === '') return groups
+    return groups
+      .map((group) => ({
+        ...group,
+        lines: group.lines.filter((line) => {
+          const haystack = `${group.sectionTitle} ${line.label}`.toLowerCase()
+          return haystack.includes(query)
+        }),
+      }))
+      .filter((group) => group.lines.length > 0)
+  }, [categoryQuery, groups])
 
   const rem = useMemo(
     () => remittanceFromGriMinor(totalsInSelectedQuarter.griIncomeMinor),
@@ -72,6 +86,7 @@ export function LedgerPage() {
   function onKindChange(next: 'income' | 'expenditure') {
     setFormError(null)
     setKind(next)
+    setCategoryQuery('')
     clearDraft()
   }
 
@@ -98,12 +113,16 @@ export function LedgerPage() {
         }
         if (minor === 0) continue
         const note = (noteByLine[line.id] ?? '').trim()
+        if (note === '') {
+          setFormError(`Add a note for "${line.label}" before review.`)
+          return null
+        }
         items.push({
           kind,
           lineId: line.id,
           dateIso: entryDateIso,
           amountMinor: minor,
-          note: note || undefined,
+          note,
           lineLabel: line.label,
           sectionTitle: line.sectionTitle,
           countsTowardGri: kind === 'income' ? resolveIncomeGriEligible(line.id) : null,
@@ -216,12 +235,37 @@ export function LedgerPage() {
           </label>
 
           <p className={styles.batchHint}>
-            Open a category to enter GHS amounts. Optional notes are stored per line. Only non-empty
-            amounts are saved.
+            Open a category to enter GHS amounts. Notes are required for each amount you enter.
+            Only non-empty amounts are saved.
           </p>
 
+          <div className={styles.categorySearchRow}>
+            <label className={styles.field}>
+              <span className={styles.label}>Find category or line</span>
+              <div className={styles.searchInputRow}>
+                <input
+                  type="search"
+                  className={styles.input}
+                  value={categoryQuery}
+                  onChange={(e) => setCategoryQuery(e.target.value)}
+                  placeholder="Search categories (e.g. offertory, utility, tithe)"
+                  autoComplete="off"
+                />
+                {categoryQuery.trim() !== '' ? (
+                  <button
+                    type="button"
+                    className={styles.clearInlineBtn}
+                    onClick={() => setCategoryQuery('')}
+                  >
+                    Clear
+                  </button>
+                ) : null}
+              </div>
+            </label>
+          </div>
+
           <div className={styles.batchSections}>
-            {groups.map((g) => {
+            {visibleGroups.map((g) => {
               const sid = g.lines[0]?.sectionId ?? g.sectionTitle
               return (
                 <details key={sid} className={styles.batchBlock} open>
@@ -253,7 +297,7 @@ export function LedgerPage() {
                         <input
                           type="text"
                           className={`${styles.input} ${styles.noteInput}`}
-                          placeholder="Optional"
+                          placeholder="Required if amount entered"
                           value={noteByLine[line.id] ?? ''}
                           onChange={(e) => patchNote(line.id, e.target.value)}
                           autoComplete="off"
@@ -265,6 +309,11 @@ export function LedgerPage() {
                 </details>
               )
             })}
+            {visibleGroups.length === 0 ? (
+              <p className={styles.emptyFilterState}>
+                No categories match "{categoryQuery.trim()}". Try a different search.
+              </p>
+            ) : null}
           </div>
 
           {formError ? (
