@@ -3,7 +3,7 @@ import { formatMinorAsGHS } from '../lib/money'
 import { formatQuarterLabel, type Quarter, quarterDateRangeIso, isIsoDateInRange } from '../lib/quarters'
 import { formatQuarterSubtitle } from './formatReportPeriod'
 import type { LedgerTransaction } from '../ledger/ledgerTypes'
-import { lineLabel, getExpenditureLine } from '../data/ledgerLines'
+import { getExpenditureLine } from '../data/ledgerLines'
 import styles from './DetailedExpenditurePreview.module.css'
 
 type Props = {
