@@ -1,4 +1,4 @@
-﻿import { useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Capacitor } from '@capacitor/core'
 import { useChurchProfile } from '../context/useChurchProfile'
@@ -8,6 +8,7 @@ import { useLedger } from '../ledger/useLedger'
 import { quarterDateRangeIso } from '../lib/quarters'
 import { buildQuarterReport } from '../reports/aggregateQuarterReport'
 import { ReportPreview } from '../reports/ReportPreview'
+import { DetailedExpenditurePreview } from '../reports/DetailedExpenditurePreview'
 import styles from './ReportsPage.module.css'
 
 export function ReportsPage() {
@@ -17,6 +18,7 @@ export function ReportsPage() {
   const { transactions, year, quarter } = useLedger()
   const sheetRef = useRef<HTMLDivElement>(null)
   const [pdfBusy, setPdfBusy] = useState(false)
+  const [reportType, setReportType] = useState<'summary' | 'detailed-expenditure'>('summary')
 
   const report = useMemo(() => {
     const { startIso, endIso } = quarterDateRangeIso(year, quarter)
@@ -65,6 +67,22 @@ export function ReportsPage() {
             </Link>
             ). Use print or PDF for auditors.
           </p>
+          <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
+            <button
+              type="button"
+              className={reportType === 'summary' ? styles.btnPrimary : styles.btnSecondary}
+              onClick={() => setReportType('summary')}
+            >
+              Summary Report
+            </button>
+            <button
+              type="button"
+              className={reportType === 'detailed-expenditure' ? styles.btnPrimary : styles.btnSecondary}
+              onClick={() => setReportType('detailed-expenditure')}
+            >
+              Detailed Expenditures (Excl. GRI)
+            </button>
+          </div>
         </div>
         <div className={styles.toolbar}>
           <button type="button" className={styles.btnSecondary} onClick={() => void handlePrint()}>
@@ -81,15 +99,25 @@ export function ReportsPage() {
         </div>
       </header>
 
-      <ReportPreview
-        ref={sheetRef}
-        report={report}
-        society={profile.society}
-        circuit={profile.circuit}
-        diocese={profile.diocese}
-        year={year}
-        quarter={quarter}
-      />
+      {reportType === 'summary' ? (
+        <ReportPreview
+          ref={sheetRef}
+          report={report}
+          society={profile.society}
+          diocese={profile.diocese}
+          year={year}
+          quarter={quarter}
+        />
+      ) : (
+        <DetailedExpenditurePreview
+          ref={sheetRef}
+          transactions={transactions}
+          society={profile.society}
+          diocese={profile.diocese}
+          year={year}
+          quarter={quarter}
+        />
+      )}
     </div>
   )
 }

@@ -1,11 +1,16 @@
 import html2canvas from 'html2canvas'
 import { jsPDF } from 'jspdf'
 
+const PAGE_WIDTH_IN = 8.27
+const PAGE_HEIGHT_IN = 11.69
+const CSS_PX_PER_IN = 96
+
 export async function exportReportToPdf(element: HTMLElement, filename: string) {
   const clone = element.cloneNode(true) as HTMLElement
   clone.classList.add('wl-pdf-capture')
-  clone.style.width = '794px'
-  clone.style.maxWidth = '794px'
+  clone.style.width = `${PAGE_WIDTH_IN}in`
+  clone.style.maxWidth = `${PAGE_WIDTH_IN}in`
+  clone.style.minHeight = `${PAGE_HEIGHT_IN}in`
   clone.style.margin = '0'
   clone.style.position = 'fixed'
   clone.style.left = '-10000px'
@@ -23,19 +28,20 @@ export async function exportReportToPdf(element: HTMLElement, filename: string) 
     useCORS: true,
     logging: false,
     backgroundColor: '#ffffff',
-    windowWidth: 794,
-    windowHeight: 1123,
+    windowWidth: Math.round(PAGE_WIDTH_IN * CSS_PX_PER_IN),
+    windowHeight: Math.round(PAGE_HEIGHT_IN * CSS_PX_PER_IN),
   })
   clone.remove()
 
   const imgData = canvas.toDataURL('image/png', 1.0)
-  const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
+  const pdf = new jsPDF({
+    orientation: 'portrait',
+    unit: 'in',
+    format: 'a4',
+  })
   const pageWidth = pdf.internal.pageSize.getWidth()
   const pageHeight = pdf.internal.pageSize.getHeight()
-  const margin = 10
-  const usableWidth = pageWidth - 2 * margin
-  const usableHeight = pageHeight - 2 * margin
-  const ratio = Math.min(usableWidth / canvas.width, usableHeight / canvas.height)
+  const ratio = Math.min(pageWidth / canvas.width, pageHeight / canvas.height)
   const imgWidth = canvas.width * ratio
   const imgHeight = canvas.height * ratio
   const x = (pageWidth - imgWidth) / 2

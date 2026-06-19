@@ -7,7 +7,7 @@
   background: #ffffff;
   color: var(--rp-text);
   font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.35;
   padding: 14mm 12mm 12mm;
   max-width: 210mm;
@@ -25,7 +25,7 @@
 
 .brandMain {
   font-weight: 700;
-  font-size: 11px;
+  font-size: 14px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin: 0 0 2px;
@@ -33,14 +33,14 @@
 }
 
 .brandSub {
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 600;
   margin: 0;
   color: var(--rp-head);
 }
 
 .society {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
   margin: 6px 0 2px;
   text-transform: uppercase;
@@ -48,7 +48,7 @@
 }
 
 .period {
-  font-size: 9px;
+  font-size: 12px;
   color: var(--rp-muted);
   margin: 0 0 10px;
   font-weight: 500;
@@ -68,7 +68,7 @@
 }
 
 .colTitle {
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -84,7 +84,7 @@
 }
 
 .sectionTitle {
-  font-size: 8.5px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -99,8 +99,8 @@
   grid-template-columns: 1fr auto;
   gap: 6px;
   padding: 2px 0;
-  border-bottom: 1px dotted rgba(148, 163, 184, 0.35);
-  font-size: 9px;
+  border-bottom: 1px solid var(--rp-border);
+  font-size: 12px;
 }
 
 .rowLabel {
@@ -128,7 +128,7 @@
   display: grid;
   grid-template-columns: 1fr auto;
   font-weight: 700;
-  font-size: 10px;
+  font-size: 13px;
   padding: 4px 0;
 }
 
@@ -136,7 +136,7 @@
   display: grid;
   grid-template-columns: 1fr auto;
   font-weight: 700;
-  font-size: 10px;
+  font-size: 13px;
   padding: 4px 0 0;
 }
 
@@ -149,7 +149,7 @@
 }
 
 .footNote {
-  font-size: 8px;
+  font-size: 11px;
   color: var(--rp-muted);
   margin: 8px 0 0;
   font-style: italic;
@@ -162,7 +162,7 @@
 }
 
 .sigTitle {
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -187,21 +187,50 @@
 }
 
 .sigLabel {
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--rp-muted);
 }
 
 @media print {
+  @page {
+    size: 210mm 297mm;
+    margin: 0;
+  }
+
   .sheet {
     width: 210mm;
     min-width: 210mm;
+    min-height: 297mm;
     max-width: none;
     padding: 12mm;
+    font-size: 12pt;
+    line-height: 1.45;
     background: #fff !important;
     color: #0f172a !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+  }
+
+  .brandMain,
+  .society {
+    font-size: 14pt;
+  }
+
+  .brandSub,
+  .period,
+  .colTitle,
+  .row {
+    font-size: 12pt;
+  }
+
+  .sectionTitle {
+    font-size: 11pt;
+  }
+
+  .totalRow,
+  .surplusRow {
+    font-size: 13pt;
   }
 
   .columns {

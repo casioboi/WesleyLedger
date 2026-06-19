@@ -9,7 +9,6 @@ import styles from './ReportPreview.module.css'
 type Props = {
   report: QuarterReportData
   society: string
-  circuit: string
   diocese: string
   year: number
   quarter: Quarter
@@ -21,7 +20,7 @@ function amt(minor: number): string {
 }
 
 export const ReportPreview = forwardRef<HTMLDivElement, Props>(function ReportPreview(
-  { report, society, circuit, diocese, year, quarter },
+  { report, society, diocese, year, quarter },
   ref
 ) {
   const incomeGroups = groupReportRows(report.incomeRows)
@@ -102,34 +101,6 @@ export const ReportPreview = forwardRef<HTMLDivElement, Props>(function ReportPr
           </div>
         </div>
       </div>
-
-      {report.hasComputedRemittanceFill ? (
-        <p className={styles.footNote}>
-          Connexional, Diocese, Circuit, and Emergency Fund lines show calculated amounts from GRI where no
-          manual entry exists on those lines.
-        </p>
-      ) : null}
-
-      <footer className={styles.signatures}>
-        <p className={styles.sigTitle}>Authorised signatures</p>
-        <div className={styles.sigGrid}>
-          <div className={styles.sigCell}>
-            <div className={styles.sigLine} />
-            <span className={styles.sigLabel}>Society Steward</span>
-          </div>
-          <div className={styles.sigCell}>
-            <div className={styles.sigLine} />
-            <span className={styles.sigLabel}>Society Treasurer</span>
-          </div>
-          <div className={styles.sigCell}>
-            <div className={styles.sigLine} />
-            <span className={styles.sigLabel}>Minister-In-Charge</span>
-          </div>
-        </div>
-        <p className={styles.footNote} style={{ marginTop: 8 }}>
-          Circuit: {circuit}
-        </p>
-      </footer>
     </div>
   )
 })
