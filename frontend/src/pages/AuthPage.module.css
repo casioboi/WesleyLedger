@@ -13,10 +13,23 @@
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  padding: max(2rem, env(safe-area-inset-top)) 1rem 2rem;
+  padding: 0 1rem;
   background: var(--wl-bg);
   color: var(--wl-frost);
   font-family: var(--wl-font);
+}
+
+/* Safe vertical centering without clipping */
+.shell::before,
+.shell::after {
+  content: '';
+  flex: 1 1 auto;
+}
+.shell::before {
+  min-height: calc(4rem + env(safe-area-inset-top));
+}
+.shell::after {
+  min-height: 2rem;
 }
 
 .ambient {
@@ -29,10 +42,11 @@
 
 .card {
   position: relative;
-  margin: auto;
+  margin: 0 auto;
   padding: clamp(2rem, 5vw, 2.8rem);
   max-width: 520px;
   width: 100%;
+  flex-shrink: 0;
   border-radius: 32px;
   background: rgba(18, 24, 40, 0.92);
   box-shadow: 0 34px 90px rgba(0, 0, 0, 0.18);
