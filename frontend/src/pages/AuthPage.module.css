@@ -9,7 +9,11 @@
   min-height: 100svh;
   width: 100%;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: max(2rem, env(safe-area-inset-top)) 1rem 2rem;
   background: var(--wl-bg);
   color: var(--wl-frost);
   font-family: var(--wl-font);
@@ -25,9 +29,10 @@
 
 .card {
   position: relative;
-  margin: 0 auto;
+  margin: auto;
   padding: clamp(2rem, 5vw, 2.8rem);
   max-width: 520px;
+  width: 100%;
   border-radius: 32px;
   background: rgba(18, 24, 40, 0.92);
   box-shadow: 0 34px 90px rgba(0, 0, 0, 0.18);
