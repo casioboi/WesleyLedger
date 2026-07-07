@@ -67,13 +67,11 @@ export const DetailedExpenditurePreview = forwardRef<HTMLDivElement, Props>(func
                 <td className={`${styles.td} ${styles.tdRight}`}>{formatMinorAsGHS(t.amountMinor)}</td>
               </tr>
             ))}
-          </tbody>
-          <tfoot>
             <tr className={styles.totalTr}>
               <td colSpan={3} className={`${styles.td} ${styles.tdTotalLabel}`}>Total Expenditure (Excl. GRI)</td>
               <td className={`${styles.td} ${styles.tdRight} ${styles.tdTotalVal}`}>{formatMinorAsGHS(totalMinor)}</td>
             </tr>
-          </tfoot>
+          </tbody>
         </table>
       </div>
     </div>

@@ -6,11 +6,12 @@
   --rp-head: #1e293b;
   background: #ffffff;
   color: var(--rp-text);
-  font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
-  font-size: 12px;
-  line-height: 1.35;
-  padding: 14mm 12mm 12mm;
-  max-width: 210mm;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 9pt;
+  line-height: 1.05;
+  padding: 2mm 3.4mm;
+  width: 8.27in;
+  max-width: 8.27in;
   margin: 0 auto;
   box-sizing: border-box;
   border: 1px solid #e2e8f0;
@@ -20,44 +21,44 @@
 
 .brandBlock {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
 }
 
 .brandMain {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 10pt;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  margin: 0 0 2px;
+  margin: 0;
   color: var(--rp-head);
 }
 
 .brandSub {
-  font-size: 13px;
+  font-size: 9pt;
   font-weight: 600;
   margin: 0;
   color: var(--rp-head);
 }
 
 .society {
-  font-size: 14px;
+  font-size: 10pt;
   font-weight: 700;
-  margin: 6px 0 2px;
+  margin: 1px 0 0;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 .period {
-  font-size: 12px;
+  font-size: 9pt;
   color: var(--rp-muted);
-  margin: 0 0 10px;
+  margin: 0;
   font-weight: 500;
 }
 
 .columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px 14px;
+  gap: 2px 16px;
   align-items: start;
 }
 
@@ -68,39 +69,39 @@
 }
 
 .colTitle {
-  font-size: 12px;
+  font-size: 9pt;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   text-align: center;
-  padding: 4px 6px;
-  border: 1px solid var(--rp-border);
+  padding: 1px 4px;
+  border: 2px solid var(--rp-text);
   background: rgba(148, 163, 184, 0.12);
-  margin-bottom: 6px;
+  margin-bottom: 1px;
 }
 
 .section {
-  margin-bottom: 6px;
+  margin-bottom: 1px;
 }
 
 .sectionTitle {
-  font-size: 11px;
+  font-size: 9pt;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--rp-muted);
-  margin: 0 0 3px;
-  padding-bottom: 2px;
-  border-bottom: 1px solid var(--rp-border);
+  letter-spacing: 0.02em;
+  color: var(--rp-head);
+  margin: 0;
+  padding-bottom: 0;
+  border-bottom: 2px solid var(--rp-text);
 }
 
 .row {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 6px;
-  padding: 2px 0;
-  border-bottom: 1px solid var(--rp-border);
-  font-size: 12px;
+  gap: 4px;
+  padding: 1px 0;
+  border-bottom: 1.5px solid var(--rp-text);
+  font-size: 9pt;
 }
 
 .rowLabel {
@@ -119,25 +120,25 @@
 }
 
 .totals {
-  margin-top: 8px;
-  padding-top: 6px;
-  border-top: 2px solid var(--rp-border);
+  margin-top: 1px;
+  padding-top: 1px;
+  border-top: 3px solid var(--rp-text);
 }
 
 .totalRow {
   display: grid;
   grid-template-columns: 1fr auto;
   font-weight: 700;
-  font-size: 13px;
-  padding: 4px 0;
+  font-size: 10pt;
+  padding: 1px 0;
 }
 
 .surplusRow {
   display: grid;
   grid-template-columns: 1fr auto;
   font-weight: 700;
-  font-size: 13px;
-  padding: 4px 0 0;
+  font-size: 10pt;
+  padding: 1px 0 0;
 }
 
 .surplusPos {
@@ -149,25 +150,25 @@
 }
 
 .footNote {
-  font-size: 11px;
+  font-size: 9pt;
   color: var(--rp-muted);
-  margin: 8px 0 0;
+  margin: 1px 0 0;
   font-style: italic;
 }
 
 .signatures {
-  margin-top: 14px;
-  padding-top: 10px;
-  border-top: 1px solid var(--rp-border);
+  margin-top: 2px;
+  padding-top: 2px;
+  border-top: 2px solid var(--rp-text);
 }
 
 .sigTitle {
-  font-size: 11px;
+  font-size: 9pt;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--rp-muted);
-  margin: 0 0 10px;
+  margin: 0 0 2px;
 }
 
 .sigGrid {
@@ -181,13 +182,13 @@
 }
 
 .sigLine {
-  border-bottom: 1px solid var(--rp-text);
-  min-height: 28px;
-  margin-bottom: 4px;
+  border-bottom: 1.5px solid var(--rp-text);
+  min-height: 20px;
+  margin-bottom: 2px;
 }
 
 .sigLabel {
-  font-size: 11px;
+  font-size: 9pt;
   font-weight: 600;
   color: var(--rp-muted);
 }
@@ -201,36 +202,40 @@
   .sheet {
     width: 210mm;
     min-width: 210mm;
-    min-height: 297mm;
+    height: 100%;
+    min-height: auto;
     max-width: none;
-    padding: 12mm;
-    font-size: 12pt;
-    line-height: 1.45;
+    padding: 2mm 3.4mm;
+    font-size: 9pt;
+    line-height: 1.05;
     background: #fff !important;
     color: #0f172a !important;
+    border: none;
+    box-shadow: none;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+    page-break-inside: avoid;
   }
 
   .brandMain,
   .society {
-    font-size: 14pt;
+    font-size: 10pt;
   }
 
   .brandSub,
   .period,
   .colTitle,
   .row {
-    font-size: 12pt;
+    font-size: 9pt;
   }
 
   .sectionTitle {
-    font-size: 11pt;
+    font-size: 9pt;
   }
 
   .totalRow,
   .surplusRow {
-    font-size: 13pt;
+    font-size: 10pt;
   }
 
   .columns {
@@ -239,6 +244,20 @@
 
   .colTitle {
     background: #f1f5f9 !important;
+    border: 2px solid #000 !important;
+  }
+
+  .sectionTitle {
+    border-bottom: 2px solid #000 !important;
+    color: #000 !important;
+  }
+
+  .row {
+    border-bottom: 1.5px solid #000 !important;
+  }
+
+  .totals {
+    border-top: 3px solid #000 !important;
   }
 
   .surplusPos {
