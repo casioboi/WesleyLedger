@@ -5,6 +5,7 @@ import type { LedgerTransaction } from '../ledger/ledgerTypes'
 import { getLedgerTransactionsSnapshot, setLedgerTransactions } from '../ledger/ledgerTransactionsStore'
 import type { ChurchProfile } from '../lib/churchProfileModel'
 import type { Quarter } from '../lib/quarters'
+import { getCustomLinesSnapshot, setCustomLines, type CustomLinesPayload } from '../ledger/customLinesStore'
 
 export type WesleyLedgerPayloadV1 = {
   version: 1
@@ -12,6 +13,7 @@ export type WesleyLedgerPayloadV1 = {
   churchProfile: ChurchProfile
   griOverrides: Record<string, boolean>
   activeQuarter: { year: number; quarter: Quarter }
+  customLines?: CustomLinesPayload
 }
 
 function emptyProfile(): ChurchProfile {
@@ -93,6 +95,9 @@ export function parseWesleyLedgerPayloadV1(raw: unknown): WesleyLedgerPayloadV1 
     churchProfile,
     griOverrides,
     activeQuarter: { year, quarter },
+    customLines: (o.customLines && typeof o.customLines === 'object' && !Array.isArray(o.customLines))
+      ? (o.customLines as CustomLinesPayload)
+      : undefined,
   }
 }
 
@@ -105,6 +110,7 @@ export function collectLocalPayload(): WesleyLedgerPayloadV1 {
     churchProfile: profile ?? emptyProfile(),
     griOverrides: { ...getGriOverridesSnapshot() },
     activeQuarter: { year: aq.year, quarter: aq.quarter },
+    customLines: getCustomLinesSnapshot(),
   }
 }
 
@@ -113,4 +119,7 @@ export function applyPayloadToLocalStores(payload: WesleyLedgerPayloadV1) {
   replaceGriOverrides(payload.griOverrides)
   setLedgerTransactions(payload.transactions)
   saveActiveQuarter(payload.activeQuarter.year, payload.activeQuarter.quarter)
+  if (payload.customLines) {
+    setCustomLines(payload.customLines)
+  }
 }

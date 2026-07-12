@@ -22,6 +22,7 @@ import { ReportsPage } from './pages/ReportsPage'
 import { SettingsPage } from './pages/SettingsPage'
 import { SplashScreen } from './pages/SplashScreen'
 import { AuthPage } from './pages/AuthPage'
+import { ManageCategoriesPage } from './pages/ManageCategoriesPage'
 import { RequireAuth } from './routes/RequireAuth'
 import { RequireProfile } from './routes/RequireProfile'
 import { LedgerCloudSync } from './sync/LedgerCloudSync'
@@ -52,6 +53,7 @@ export default function App() {
                 <Route path="archive" element={<ArchivePage />} />
                 <Route path="reports" element={<ReportsPage />} />
                 <Route path="settings" element={<SettingsPage />} />
+                <Route path="settings/categories" element={<ManageCategoriesPage />} />
               </Route>
             </Route>
           </Route>

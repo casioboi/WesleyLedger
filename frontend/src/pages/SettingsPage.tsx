@@ -4,7 +4,7 @@ import { CloudAccountSection } from '../components/CloudAccountSection'
 import { ThemeToggle } from '../components/ThemeToggle'
 import { useChurchProfile } from '../context/useChurchProfile'
 import { useToast } from '../context/ToastContext'
-import { INCOME_LINES, incomeLineGroups, isIncomeGriEligibleByDefault } from '../data/ledgerLines'
+import { getMergedIncomeLines, incomeLineGroups, isIncomeGriEligibleByDefault } from '../data/ledgerLines'
 import {
   getGriOverridesSnapshot,
   griOverridesMapsEqual,
@@ -39,7 +39,7 @@ export function SettingsPage() {
   function patchDraftSection(sectionId: string, eligible: boolean) {
     setDraft((d) => {
       const next = { ...d }
-      for (const line of INCOME_LINES) {
+      for (const line of getMergedIncomeLines()) {
         if (line.sectionId !== sectionId) continue
         const def = isIncomeGriEligibleByDefault(line.id)
         if (eligible === def) delete next[line.id]
@@ -176,6 +176,20 @@ export function SettingsPage() {
               </div>
             )
           })}
+        </div>
+      </section>
+
+      <section className={local.categories} aria-labelledby="categories-heading">
+        <h2 id="categories-heading" className={local.profileTitle}>
+          Manage Categories
+        </h2>
+        <p className={local.profileHint}>
+          Add new income or expenditure categories, or rename existing ones. Your custom categories are synced to the cloud and appear in ledger entry forms and quarterly reports.
+        </p>
+        <div style={{ marginTop: '1rem' }}>
+          <Link to="/app/settings/categories" className={local.resetBtn} style={{ textDecoration: 'none', display: 'inline-block' }}>
+            Open Category Editor
+          </Link>
         </div>
       </section>
     </div>

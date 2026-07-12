@@ -1,0 +1,171 @@
+.wrap {
+  margin-top: 1rem;
+}
+
+.columns {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.column {
+  flex: 1;
+  min-width: 300px;
+  background: var(--wl-surface-sunken);
+  border: 1px solid var(--wl-border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.colHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--wl-border);
+}
+
+.columnTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--wl-text);
+  margin: 0;
+}
+
+.addBtn {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid var(--wl-border);
+  background: var(--wl-surface);
+  color: var(--wl-text);
+  cursor: pointer;
+}
+
+.addBtn:hover {
+  background: var(--wl-glass);
+}
+
+.addForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--wl-surface);
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--wl-blue);
+  margin-bottom: 1rem;
+}
+
+.select,
+.input {
+  padding: 0.4rem;
+  border: 1px solid var(--wl-border);
+  border-radius: 4px;
+  background: var(--wl-surface-sunken);
+  color: var(--wl-text);
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.addActions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.group {
+  margin-bottom: 1.5rem;
+}
+
+.groupTitle {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: var(--wl-subtle);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: 0.05em;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.listItem {
+  background: var(--wl-surface);
+  border: 1px solid var(--wl-border);
+  border-radius: 4px;
+  padding: 0.4rem 0.6rem;
+}
+
+.viewRow,
+.editRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.9rem;
+  color: var(--wl-text);
+}
+
+.editBtn {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--wl-blue);
+  cursor: pointer;
+  opacity: 0;
+}
+
+.listItem:hover .editBtn {
+  opacity: 1;
+}
+
+.editBtn:hover {
+  background: var(--wl-glass);
+  border-color: var(--wl-border);
+}
+
+.saveBtn {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid var(--wl-blue);
+  background: var(--wl-blue);
+  color: white;
+  cursor: pointer;
+}
+
+.cancelBtn {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid var(--wl-border);
+  background: transparent;
+  color: var(--wl-text);
+  cursor: pointer;
+}
+
+.backLink {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: var(--wl-blue);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}

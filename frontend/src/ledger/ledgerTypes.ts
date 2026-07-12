@@ -19,3 +19,12 @@ export type QuarterTotals = {
   griIncomeMinor: number
   surplusMinor: number
 }
+
+export type LedgerLineDef = {
+  id: string
+  sectionId: string
+  sectionTitle: string
+  label: string
+  /** When true, amounts on this line feed GRI-based remittances unless overridden later in Settings. */
+  defaultGriEligible?: boolean
+}

@@ -1,4 +1,4 @@
-import { EXPENDITURE_LINES, INCOME_LINES } from '../data/ledgerLines'
+import { getMergedExpenditureLines, getMergedIncomeLines } from '../data/ledgerLines'
 import { isIsoDateInRange } from '../lib/quarters'
 import { remittanceFromGriMinor } from '../lib/remittance'
 import type { LedgerTransaction } from '../ledger/ledgerTypes'
@@ -60,13 +60,13 @@ export function buildQuarterReport(
     return computed
   }
 
-  const incomeRows: ReportRow[] = INCOME_LINES.map((l) => ({
+  const incomeRows: ReportRow[] = getMergedIncomeLines().map((l) => ({
     sectionTitle: l.sectionTitle,
     label: l.label,
     minor: incomeMap.get(l.id) ?? 0,
   }))
 
-  const expenditureRows: ReportRow[] = EXPENDITURE_LINES.map((l) => ({
+  const expenditureRows: ReportRow[] = getMergedExpenditureLines().map((l) => ({
     sectionTitle: l.sectionTitle,
     label: l.label,
     minor: expenditureDisplayMinor(l.id),

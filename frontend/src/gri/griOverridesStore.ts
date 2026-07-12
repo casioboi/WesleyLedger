@@ -1,4 +1,4 @@
-import { INCOME_LINES, isIncomeGriEligibleByDefault } from '../data/ledgerLines'
+import { getMergedIncomeLines, isIncomeGriEligibleByDefault } from '../data/ledgerLines'
 
 const STORAGE_KEY = 'wesleyLedger.griEligibility.v1'
 
@@ -52,7 +52,7 @@ function replaceAll(next: Record<string, boolean>) {
 /** Keep only income-line keys that differ from schedule defaults (stable for compare + persist). */
 export function normalizeGriOverrides(raw: Record<string, boolean>): Record<string, boolean> {
   const next: Record<string, boolean> = {}
-  for (const line of INCOME_LINES) {
+  for (const line of getMergedIncomeLines()) {
     if (!Object.prototype.hasOwnProperty.call(raw, line.id)) continue
     const v = raw[line.id]
     if (typeof v !== 'boolean') continue
@@ -89,7 +89,7 @@ export function setLineGriEligible(lineId: string, eligible: boolean) {
 /** Apply the same GRI choice to every income line in a section (inc-1 … inc-bf). */
 export function setSectionGriEligible(sectionId: string, eligible: boolean) {
   const next = { ...cached }
-  for (const line of INCOME_LINES) {
+  for (const line of getMergedIncomeLines()) {
     if (line.sectionId !== sectionId) continue
     const def = isIncomeGriEligibleByDefault(line.id)
     if (eligible === def) {

@@ -3,14 +3,8 @@
  * defaultGriEligible: only on income — sections 1–6 typically count toward GRI; 7 and Bal b/f default off.
  */
 
-export type LedgerLineDef = {
-  id: string
-  sectionId: string
-  sectionTitle: string
-  label: string
-  /** When true, amounts on this line feed GRI-based remittances unless overridden later in Settings. */
-  defaultGriEligible?: boolean
-}
+import type { LedgerLineDef } from '../ledger/ledgerTypes'
+import { getCustomLinesSnapshot } from '../ledger/customLinesStore'
 
 const gri = (v: boolean) => v
 
@@ -22,6 +16,7 @@ export const INCOME_LINES: LedgerLineDef[] = [
   { id: 'i1-3', sectionId: 'inc-1', sectionTitle: '1. Offertory', label: 'Kofi and Ama', defaultGriEligible: gri(true) },
   { id: 'i1-4', sectionId: 'inc-1', sectionTitle: '1. Offertory', label: 'Special Offering/Sombi', defaultGriEligible: gri(true) },
   { id: 'i1-5', sectionId: 'inc-1', sectionTitle: '1. Offertory', label: 'Thanks Offering', defaultGriEligible: gri(true) },
+  { id: 'i1-6', sectionId: 'inc-1', sectionTitle: '1. Offertory', label: 'Project Offering', defaultGriEligible: gri(false) },
   // 2. TITHE
   { id: 'i2-1', sectionId: 'inc-2', sectionTitle: '2. Tithe offering', label: 'Tithes', defaultGriEligible: gri(true) },
   // 3. HARVEST
@@ -128,15 +123,28 @@ export const EXPENDITURE_LINES: LedgerLineDef[] = [
   { id: 'e8-6', sectionId: 'exp-8', sectionTitle: '8. Other expenses remittance', label: 'Bible Week' },
 ]
 
-const incomeMap = new Map(INCOME_LINES.map((l) => [l.id, l]))
-const expMap = new Map(EXPENDITURE_LINES.map((l) => [l.id, l]))
+export function getMergedIncomeLines(): LedgerLineDef[] {
+  const custom = getCustomLinesSnapshot()
+  const base = INCOME_LINES.map((l) =>
+    custom.renamedLines[l.id] ? { ...l, label: custom.renamedLines[l.id] } : l
+  )
+  return [...base, ...custom.addedIncomeLines]
+}
+
+export function getMergedExpenditureLines(): LedgerLineDef[] {
+  const custom = getCustomLinesSnapshot()
+  const base = EXPENDITURE_LINES.map((l) =>
+    custom.renamedLines[l.id] ? { ...l, label: custom.renamedLines[l.id] } : l
+  )
+  return [...base, ...custom.addedExpenditureLines]
+}
 
 export function getIncomeLine(id: string): LedgerLineDef | undefined {
-  return incomeMap.get(id)
+  return getMergedIncomeLines().find((l) => l.id === id)
 }
 
 export function getExpenditureLine(id: string): LedgerLineDef | undefined {
-  return expMap.get(id)
+  return getMergedExpenditureLines().find((l) => l.id === id)
 }
 
 export function lineLabel(
@@ -172,9 +180,9 @@ function groupBySection(lines: LedgerLineDef[]): LineGroup[] {
 }
 
 export function incomeLineGroups(): LineGroup[] {
-  return groupBySection(INCOME_LINES)
+  return groupBySection(getMergedIncomeLines())
 }
 
 export function expenditureLineGroups(): LineGroup[] {
-  return groupBySection(EXPENDITURE_LINES)
+  return groupBySection(getMergedExpenditureLines())
 }
