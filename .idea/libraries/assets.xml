@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="assets">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/node_modules/wesleyledger/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/assets/html2canvas-CGJnn_xp.js.jar!/" />
+      <root url="jar://$PROJECT_DIR$/node_modules/wesleyledger/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/assets/typeof-mVVFPGHC.js.jar!/" />
+      <root url="jar://$PROJECT_DIR$/node_modules/wesleyledger/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/assets/exportReportPdf-BgL4qEFd.js.jar!/" />
+      <root url="jar://$PROJECT_DIR$/node_modules/wesleyledger/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/assets/index.es-4KjQmAg1.js.jar!/" />
+      <root url="jar://$PROJECT_DIR$/node_modules/wesleyledger/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/assets/index-c5sYn9kv.css.jar!/" />
+      <root url="jar://$PROJECT_DIR$/node_modules/wesleyledger/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/assets/purify.es-DFivPf1X.js.jar!/" />
+      <root url="jar://$PROJECT_DIR$/node_modules/wesleyledger/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/assets/index-Boa5RWfa.js.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

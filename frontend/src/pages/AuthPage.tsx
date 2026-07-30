@@ -9,7 +9,7 @@ import styles from './AuthPage.module.css'
 
 export function AuthPage() {
   const navigate = useNavigate()
-  const { session, loading, configured, signInWithEmail, signUpWithEmail, resetPassword } = useAuth()
+  const { session, loading, signInWithEmail, signUpWithEmail, resetPassword } = useAuth()
   const { isComplete, saveProfile, profile } = useChurchProfile()
   const { showToast } = useToast()
 
@@ -99,19 +99,6 @@ export function AuthPage() {
     setInfo('Account created. Please sign in with your credentials to continue.')
   }
 
-  if (!configured) {
-    return (
-      <div className={styles.shell}>
-        <div className={styles.themeCorner}>
-          <ThemeToggle variant="compact" />
-        </div>
-        <div className={styles.card}>
-          <h1>Supabase is not configured</h1>
-          <p>Please add your Supabase environment variables and reload the app.</p>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className={styles.shell}>
@@ -135,7 +122,7 @@ export function AuthPage() {
           </h1>
           <p>
             {mode === 'signIn'
-              ? 'Use your email and password to restore your secure ledger and sync to Supabase.'
+              ? 'Use your email and password to access account records.'
               : mode === 'signUp'
               ? 'Create your account and add your society details as part of onboarding.'
               : 'Enter your email address and we\'ll send you a link to reset your password.'}

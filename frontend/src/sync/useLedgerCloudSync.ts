@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
+import { Network } from '@capacitor/network'
 import { useAuth } from '../context/useAuth'
-import { getSupabase } from '../lib/supabaseClient'
 import { subscribeChurchProfileStore } from '../context/ChurchProfileProvider'
 import { subscribeGriOverrides } from '../gri/griOverridesStore'
 import { subscribeActiveQuarter } from '../ledger/activeQuarterStorage'
@@ -9,7 +9,7 @@ import {
   integrateRemoteLedgerThenPush,
   pullRemoteLedgerIfNewer,
   pushLocalLedgerToCloud,
-} from './supabaseLedgerSync'
+} from './firebaseLedgerSync'
 
 function debounce(fn: () => void, ms: number) {
   let t: ReturnType<typeof setTimeout> | undefined
@@ -32,17 +32,19 @@ export function useLedgerCloudSync() {
   const userId = session?.user.id
 
   useEffect(() => {
-    if (!configured || loading || !userId || !getSupabase()) return
+    if (!configured || loading || !userId) return
     integrateRemoteLedgerThenPush(userId).catch(() => {
       /* surfaced via Settings if user runs manual sync */
     })
   }, [configured, loading, userId])
 
   useEffect(() => {
-    if (!configured || !userId || !getSupabase()) return
+    if (!configured || !userId) return
 
-    const push = () => {
-      if (typeof navigator !== 'undefined' && !navigator.onLine) return
+    const push = async () => {
+      // Use Capacitor network for reliable check
+      const status = await Network.getStatus()
+      if (!status.connected) return
       pushLocalLedgerToCloud(userId).catch(() => {})
     }
 
@@ -55,6 +57,15 @@ export function useLedgerCloudSync() {
       subscribeActiveQuarter(debounced),
     ]
 
+    let networkListener: any = null
+    Network.addListener('networkStatusChange', (status) => {
+      if (status.connected) {
+        push()
+      }
+    }).then(listener => {
+      networkListener = listener
+    })
+
     const onOnline = () => {
       push()
     }
@@ -64,11 +75,12 @@ export function useLedgerCloudSync() {
       debounced.cancel()
       unsubs.forEach((u) => u())
       window.removeEventListener('online', onOnline)
+      if (networkListener) networkListener.remove()
     }
   }, [configured, userId])
 
   useEffect(() => {
-    if (!configured || !userId || !getSupabase()) return
+    if (!configured || !userId) return
     const onVis = () => {
       if (document.visibilityState !== 'visible') return
       pullRemoteLedgerIfNewer(userId).catch(() => {})

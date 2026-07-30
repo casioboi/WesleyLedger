@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useAuth } from '../context/useAuth'
 import { useToast } from '../context/ToastContext'
-import { integrateRemoteLedgerThenPush } from '../sync/supabaseLedgerSync'
+import { integrateRemoteLedgerThenPush } from '../sync/firebaseLedgerSync'
 import pageStyles from '../pages/PlaceholderPage.module.css'
 import local from '../pages/SettingsPage.module.css'
 
@@ -93,9 +93,7 @@ export function CloudAccountSection() {
 
       {!configured ? (
         <p className={pageStyles.text}>
-          Cloud sync is not configured for this build. Add <code className={local.code}>VITE_SUPABASE_URL</code> and{' '}
-          <code className={local.code}>VITE_SUPABASE_ANON_KEY</code> to your environment, run the SQL in{' '}
-          <code className={local.code}>frontend/supabase/ledger_sync.sql</code>, then rebuild.
+          Cloud sync is not configured for this build. Add <code className={local.code}>VITE_FIREBASE_*</code> keys to your environment, then rebuild.
         </p>
       ) : loading ? (
         <p className={local.profileHint}>Loading session…</p>

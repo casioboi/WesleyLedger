@@ -9,6 +9,7 @@ import { quarterDateRangeIso } from '../lib/quarters'
 import { buildQuarterReport } from '../reports/aggregateQuarterReport'
 import { ReportPreview } from '../reports/ReportPreview'
 import { DetailedExpenditurePreview } from '../reports/DetailedExpenditurePreview'
+import { DetailedIncomePreview } from '../reports/DetailedIncomePreview'
 import styles from './ReportsPage.module.css'
 
 export function ReportsPage() {
@@ -18,7 +19,7 @@ export function ReportsPage() {
   const { transactions, year, quarter } = useLedger()
   const sheetRef = useRef<HTMLDivElement>(null)
   const [pdfBusy, setPdfBusy] = useState(false)
-  const [reportType, setReportType] = useState<'summary' | 'detailed-expenditure'>('summary')
+  const [reportType, setReportType] = useState<'summary' | 'detailed-expenditure' | 'detailed-income'>('summary')
 
   const report = useMemo(() => {
     const { startIso, endIso } = quarterDateRangeIso(year, quarter)
@@ -32,7 +33,8 @@ export function ReportsPage() {
     try {
       const { exportReportToPdf } = await import('../reports/exportReportPdf')
       const safeSociety = profile.society.replace(/[^\w\s-]/g, '').slice(0, 40) || 'Society'
-      const fname = `WesleyLedger-${safeSociety}-Q${quarter}-${year}.pdf`
+      const suffix = reportType === 'detailed-expenditure' ? '-Expenditure' : reportType === 'detailed-income' ? '-Income' : ''
+      const fname = `WesleyLedger-${safeSociety}-Q${quarter}-${year}${suffix}.pdf`
       await exportReportToPdf(el, fname)
       if (!silent) showToast('PDF downloaded.')
     } catch {
@@ -82,6 +84,13 @@ export function ReportsPage() {
             >
               Detailed Expenditures (Excl. GRI)
             </button>
+            <button
+              type="button"
+              className={reportType === 'detailed-income' ? styles.btnPrimary : styles.btnSecondary}
+              onClick={() => setReportType('detailed-income')}
+            >
+              Detailed Income
+            </button>
           </div>
         </div>
         <div className={styles.toolbar}>
@@ -99,25 +108,36 @@ export function ReportsPage() {
         </div>
       </header>
 
-      {reportType === 'summary' ? (
-        <ReportPreview
-          ref={sheetRef}
-          report={report}
-          society={profile.society}
-          diocese={profile.diocese}
-          year={year}
-          quarter={quarter}
-        />
-      ) : (
-        <DetailedExpenditurePreview
-          ref={sheetRef}
-          transactions={transactions}
-          society={profile.society}
-          diocese={profile.diocese}
-          year={year}
-          quarter={quarter}
-        />
-      )}
+      <div className={styles.previewContainer}>
+        {reportType === 'summary' ? (
+          <ReportPreview
+            ref={sheetRef}
+            report={report}
+            society={profile.society}
+            diocese={profile.diocese}
+            year={year}
+            quarter={quarter}
+          />
+        ) : reportType === 'detailed-expenditure' ? (
+          <DetailedExpenditurePreview
+            ref={sheetRef}
+            transactions={transactions}
+            society={profile.society}
+            diocese={profile.diocese}
+            year={year}
+            quarter={quarter}
+          />
+        ) : (
+          <DetailedIncomePreview
+            ref={sheetRef}
+            transactions={transactions}
+            society={profile.society}
+            diocese={profile.diocese}
+            year={year}
+            quarter={quarter}
+          />
+        )}
+      </div>
     </div>
   )
 }
