@@ -19,5 +19,5 @@ export function formatMinorAsGHS(minor: number): string {
   const ps = v % PESEWAS_PER_GHS
   const frac = ps.toString().padStart(2, '0')
   const parts = gh.toLocaleString('en-GH', { maximumFractionDigits: 0 })
-  return `${neg ? '−' : ''}${parts}.${frac}`
+  return `${neg ? '-' : ''}${parts}.${frac}`
 }

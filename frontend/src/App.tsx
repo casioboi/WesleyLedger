@@ -23,8 +23,11 @@ import { SettingsPage } from './pages/SettingsPage'
 import { SplashScreen } from './pages/SplashScreen'
 import { AuthPage } from './pages/AuthPage'
 import { ManageCategoriesPage } from './pages/ManageCategoriesPage'
+import { DevConsolePage } from './pages/DevConsolePage'
+import { PortalChoicePage } from './pages/PortalChoicePage'
 import { RequireAuth } from './routes/RequireAuth'
 import { RequireProfile } from './routes/RequireProfile'
+import { RequireSubscription } from './routes/RequireSubscription'
 import { LedgerCloudSync } from './sync/LedgerCloudSync'
 
 const Router = import.meta.env.VITE_HASH_ROUTING === '1' ? HashRouter : BrowserRouter
@@ -36,16 +39,26 @@ export default function App() {
         <ToastProvider>
         <ChurchProfileProvider>
         <GriEligibilityProvider>
-        <LedgerProvider>
         <AuthProvider>
+        <LedgerProvider>
         <LedgerCloudSync />
         <Routes>
           <Route path="/" element={<SplashScreen />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/setup" element={<ChurchProfileSetupPage />} />
           <Route element={<RequireAuth />}>
+            <Route path="/portal-choice" element={<PortalChoicePage />} />
+          </Route>
+          <Route path="/admin" element={<RequireAuth />}>
+            <Route index element={<DevConsolePage />} />
+          </Route>
+          <Route element={<RequireAuth />}>
             <Route element={<RequireProfile />}>
-              <Route path="/app" element={<AppShell />}>
+              <Route path="/app" element={
+                <RequireSubscription>
+                  <AppShell />
+                </RequireSubscription>
+              }>
                 <Route index element={<DashboardPage />} />
                 <Route path="ledger" element={<LedgerPage />} />
                 <Route path="ledger/review" element={<LedgerReviewPage />} />
@@ -59,8 +72,8 @@ export default function App() {
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-        </AuthProvider>
         </LedgerProvider>
+        </AuthProvider>
         </GriEligibilityProvider>
         </ChurchProfileProvider>
         </ToastProvider>

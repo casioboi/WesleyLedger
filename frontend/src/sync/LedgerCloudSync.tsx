@@ -1,6 +1,6 @@
-import { useLedgerCloudSync } from './useLedgerCloudSync'
+import { useRealtimeCloudSync } from './useRealtimeCloudSync'
 
 export function LedgerCloudSync() {
-  useLedgerCloudSync()
+  useRealtimeCloudSync()
   return null
 }

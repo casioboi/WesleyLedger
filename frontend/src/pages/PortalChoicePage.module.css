@@ -1,0 +1,179 @@
+.shell {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: clamp(1.25rem, 5vw, 3rem);
+  position: relative;
+  overflow: hidden;
+  color: var(--wl-frost);
+  background:
+    radial-gradient(ellipse at 12% 10%, var(--wl-red-soft), transparent 34%),
+    radial-gradient(ellipse at 88% 90%, var(--wl-blue-soft), transparent 38%),
+    var(--wl-bg);
+  font-family: var(--wl-font);
+}
+
+.themeCorner {
+  position: absolute;
+  top: max(1rem, env(safe-area-inset-top));
+  right: max(1rem, env(safe-area-inset-right));
+}
+
+.card {
+  width: min(100%, 620px);
+  padding: clamp(1.5rem, 5vw, 3rem);
+  border: 1px solid var(--wl-border);
+  border-radius: 28px;
+  background: var(--wl-panel);
+  box-shadow: var(--wl-card-shadow);
+  backdrop-filter: blur(18px);
+  text-align: center;
+}
+
+.logo {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+  margin-bottom: 0.75rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.75rem;
+  color: var(--wl-link);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.card h1 {
+  margin: 0;
+  font-family: var(--wl-font-display);
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  line-height: 1.1;
+}
+
+.intro {
+  max-width: 42ch;
+  margin: 1rem auto 0;
+  color: var(--wl-muted);
+  line-height: 1.6;
+}
+
+.options {
+  display: grid;
+  gap: 0.875rem;
+  margin-top: 2rem;
+  text-align: left;
+}
+
+.option {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr) 1.5rem;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  min-height: 88px;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--wl-border);
+  border-radius: 18px;
+  color: var(--wl-frost);
+  background: var(--wl-glass);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.option:hover {
+  border-color: var(--wl-link);
+  background: var(--wl-nav-hover-bg);
+}
+
+.option:active {
+  transform: scale(0.99);
+}
+
+.option:focus-visible,
+.retry:focus-visible {
+  outline: 3px solid var(--wl-link);
+  outline-offset: 3px;
+}
+
+.optionIcon {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border-radius: 14px;
+  color: var(--wl-frost);
+  background: var(--wl-red-soft);
+}
+
+.userIcon {
+  background: var(--wl-blue-soft);
+}
+
+.optionText {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.optionText strong {
+  font-family: var(--wl-font-display);
+  font-size: 1.05rem;
+}
+
+.optionText span {
+  color: var(--wl-muted);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.arrow {
+  color: var(--wl-link);
+  font-size: 1.4rem;
+}
+
+.note {
+  margin: 1.5rem 0 0;
+  color: var(--wl-muted);
+  font-size: 0.85rem;
+}
+
+.status {
+  margin: 0;
+  color: var(--wl-muted);
+}
+
+.retry {
+  min-height: 48px;
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.25rem;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--wl-blue), var(--wl-red));
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 420px) {
+  .option {
+    grid-template-columns: 2.75rem minmax(0, 1fr) 1rem;
+    gap: 0.75rem;
+    padding: 0.875rem;
+  }
+
+  .optionIcon {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .option {
+    transition: none;
+  }
+}

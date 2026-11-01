@@ -22,6 +22,11 @@ import {
   setArchivedLedgerTransactions,
   subscribeArchivedLedgerTransactions,
 } from './ledgerArchiveStore'
+import { useAuth } from '../context/useAuth'
+import {
+  upsertRemoteTransaction,
+  deleteRemoteTransaction,
+} from '../sync/firestoreSyncService'
 
 function newTxId(): string {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
@@ -32,6 +37,8 @@ function newTxId(): string {
 
 export function LedgerProvider({ children }: { children: ReactNode }) {
   const { resolveIncomeGriEligible } = useGriEligibility()
+  const { session, configured } = useAuth()
+  const userId = configured ? session?.user.id : undefined
 
   const transactions = useSyncExternalStore(
     subscribeLedgerTransactions,
@@ -59,6 +66,22 @@ export function LedgerProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
+  useEffect(() => {
+    // Debounce physical backups by 5 seconds to avoid excessive native file writes
+    const timer = setTimeout(() => {
+      import('../sync/capacitorFileSystemBackup').then(m => {
+        m.createLocalDeviceBackup({
+          transactions,
+          archivedTransactions,
+          year,
+          quarter
+        })
+      })
+    }, 5000)
+    return () => clearTimeout(timer)
+  }, [transactions, archivedTransactions, year, quarter])
+
+
   const setQuarter = useCallback((y: number, q: Quarter) => {
     setYear(y)
     setQuarterState(q)
@@ -74,14 +97,18 @@ export function LedgerProvider({ children }: { children: ReactNode }) {
       }
       const prev = getLedgerTransactionsSnapshot()
       setLedgerTransactions([...prev, tx])
+      // Write-through to Firestore (queued offline, synced when online)
+      if (userId) upsertRemoteTransaction(userId, tx).catch(() => {})
     },
-    []
+    [userId]
   )
 
   const removeTransaction = useCallback((id: string) => {
     const prev = getLedgerTransactionsSnapshot()
     setLedgerTransactions(prev.filter((t) => t.id !== id))
-  }, [])
+    // Delete from Firestore (queued offline, synced when online)
+    if (userId) deleteRemoteTransaction(userId, id).catch(() => {})
+  }, [userId])
 
   const archiveTransaction = useCallback((id: string) => {
     const prev = getLedgerTransactionsSnapshot()
@@ -91,8 +118,10 @@ export function LedgerProvider({ children }: { children: ReactNode }) {
     setLedgerTransactions(prev.filter((t) => t.id !== id))
     const archivedPrev = getArchivedLedgerTransactionsSnapshot()
     setArchivedLedgerTransactions([{ ...found, archivedAt: new Date().toISOString() }, ...archivedPrev])
+    // Remove from active transactions in Firestore
+    if (userId) deleteRemoteTransaction(userId, id).catch(() => {})
     return true
-  }, [])
+  }, [userId])
 
   const restoreArchivedTransaction = useCallback((id: string) => {
     const archivedPrev = getArchivedLedgerTransactionsSnapshot()

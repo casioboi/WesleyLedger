@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'WesleyLedger',
   webDir: 'dist',
   android: {
-    allowMixedContent: true,
+    allowMixedContent: false,
   },
 }
 

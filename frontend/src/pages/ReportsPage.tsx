@@ -36,9 +36,18 @@ export function ReportsPage() {
       const suffix = reportType === 'detailed-expenditure' ? '-Expenditure' : reportType === 'detailed-income' ? '-Income' : ''
       const fname = `WesleyLedger-${safeSociety}-Q${quarter}-${year}${suffix}.pdf`
       await exportReportToPdf(el, fname)
-      if (!silent) showToast('PDF downloaded.')
-    } catch {
-      showToast('Could not create the PDF. Try again or use Print.', 'error')
+      if (!silent) {
+        showToast(
+          Capacitor.isNativePlatform()
+            ? `Saved to Documents/WesleyLedger/Reports/${fname}.`
+            : 'PDF downloaded.',
+          'success',
+          'Report ready'
+        )
+      }
+    } catch (err) {
+      console.error('PDF export error:', err)
+      showToast('Could not export the report. Please try again.', 'error')
     } finally {
       setPdfBusy(false)
     }
@@ -46,11 +55,8 @@ export function ReportsPage() {
 
   async function handlePrint() {
     if (Capacitor.isNativePlatform()) {
+      // On Android, create and share the same PDF file used by the download action.
       await handlePdf(true)
-      showToast(
-        'Print dialog is not available inside the mobile app. Open the generated PDF and print from your PDF viewer.',
-        'info'
-      )
       return
     }
     window.print()

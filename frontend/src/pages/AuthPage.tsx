@@ -1,16 +1,22 @@
-import { useEffect, useState, type FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useAuth } from '../context/useAuth'
 import { useToast } from '../context/ToastContext'
 import { useChurchProfile } from '../context/useChurchProfile'
 import { ThemeToggle } from '../components/ThemeToggle'
+import { forcePullFromCloud } from '../sync/firebaseLedgerSync'
+import { app } from '../firebase'
+import { getPortalAccess } from '../lib/portalAccess'
 import styles from './AuthPage.module.css'
 
 export function AuthPage() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const targetPath = (location.state as { from?: { pathname: string } })?.from?.pathname || '/app'
+  const hasRequestedTarget = Boolean((location.state as { from?: { pathname: string } })?.from?.pathname)
   const { session, loading, signInWithEmail, signUpWithEmail, resetPassword } = useAuth()
-  const { isComplete, saveProfile, profile } = useChurchProfile()
+  const { saveProfile, profile } = useChurchProfile()
   const { showToast } = useToast()
 
   const [mode, setMode] = useState<'signIn' | 'signUp' | 'reset'>('signIn')
@@ -24,12 +30,27 @@ export function AuthPage() {
   const [info, setInfo] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
 
+  const destinationFor = useCallback(async (uid: string) => {
+    if (!app) return '/app'
+    const access = await getPortalAccess(uid)
+    if (access.canUseAdmin) return '/portal-choice'
+    return hasRequestedTarget ? targetPath : '/app'
+  }, [hasRequestedTarget, targetPath])
+
   useEffect(() => {
-    if (loading) return
-    if (session) {
-      navigate(isComplete ? '/app' : '/setup', { replace: true })
-    }
-  }, [loading, session, isComplete, navigate])
+    if (loading || busy) return
+    if (!session) return
+    let cancelled = false
+    void destinationFor(session.user.id).then((path) => {
+      if (!cancelled) navigate(path, { replace: true })
+    }).catch((verificationError: unknown) => {
+      console.error('Could not verify portal access after sign-in:', verificationError)
+      if (!cancelled) {
+        setError('We could not verify your account access. Check your connection and try again.')
+      }
+    })
+    return () => { cancelled = true }
+  }, [loading, busy, session, navigate, destinationFor])
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -47,14 +68,31 @@ export function AuthPage() {
     setBusy(true)
 
     if (mode === 'signIn') {
-      const { error: signInError } = await signInWithEmail(trimmedEmail, trimmedPassword)
-      setBusy(false)
+      const { error: signInError, session: signInSession } = await signInWithEmail(trimmedEmail, trimmedPassword)
       if (signInError) {
+        setBusy(false)
         setError(signInError.message)
         return
       }
-      showToast('Signed in successfully.', 'success')
-      navigate('/app', { replace: true })
+      // Pull cloud data immediately on login before navigating
+      const uid = signInSession?.user.id
+      if (uid) {
+        try {
+          await forcePullFromCloud(uid)
+        } catch {
+          // Non-fatal: data will sync in background
+        }
+      }
+      try {
+        const destination = await destinationFor(uid ?? '')
+        showToast('Signed in successfully.', 'success')
+        navigate(destination, { replace: true })
+      } catch (verificationError) {
+        console.error('Could not verify portal access after sign-in:', verificationError)
+        setError('You are signed in, but we could not verify your portal access. Check your connection and try again.')
+      } finally {
+        setBusy(false)
+      }
       return
     }
 
@@ -90,7 +128,7 @@ export function AuthPage() {
     saveProfile({ society: trimmedSociety, circuit: trimmedCircuit, diocese: trimmedDiocese })
 
     if (signUpSession) {
-      showToast('Account created and signed in. Loading your dashboard…', 'success')
+      showToast('Account created and signed in. Loading your dashboard...', 'success')
       navigate('/app', { replace: true })
       return
     }

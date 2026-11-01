@@ -5,8 +5,8 @@ import { subscribeChurchProfileStore } from '../context/ChurchProfileProvider'
 import { subscribeGriOverrides } from '../gri/griOverridesStore'
 import { subscribeActiveQuarter } from '../ledger/activeQuarterStorage'
 import { subscribeLedgerTransactions } from '../ledger/ledgerTransactionsStore'
+import { getLedgerTransactionsSnapshot } from '../ledger/ledgerTransactionsStore'
 import {
-  integrateRemoteLedgerThenPush,
   pullRemoteLedgerIfNewer,
   pushLocalLedgerToCloud,
 } from './firebaseLedgerSync'
@@ -24,8 +24,10 @@ function debounce(fn: () => void, ms: number) {
 }
 
 /**
- * When the user is signed in, pulls newer cloud data once per session user id, then keeps the cloud
- * copy updated (debounced) after local changes. Works offline: pushes resume when the device is online.
+ * Sync strategy:
+ * - On login: pull from cloud only.
+ * - On local changes: auto-push (debounced), but only when local has transactions.
+ * - On network reconnect / tab focus: pull if cloud is newer.
  */
 export function useLedgerCloudSync() {
   const { session, loading, configured } = useAuth()
@@ -33,8 +35,8 @@ export function useLedgerCloudSync() {
 
   useEffect(() => {
     if (!configured || loading || !userId) return
-    integrateRemoteLedgerThenPush(userId).catch(() => {
-      /* surfaced via Settings if user runs manual sync */
+    pullRemoteLedgerIfNewer(userId).catch(() => {
+      /* errors surface via manual sync in Settings */
     })
   }, [configured, loading, userId])
 
@@ -42,7 +44,10 @@ export function useLedgerCloudSync() {
     if (!configured || !userId) return
 
     const push = async () => {
-      // Use Capacitor network for reliable check
+      // Never auto-push empty data; this prevents a fresh device from wiping the cloud.
+      const localTxs = getLedgerTransactionsSnapshot()
+      if (localTxs.length === 0) return
+
       const status = await Network.getStatus()
       if (!status.connected) return
       pushLocalLedgerToCloud(userId).catch(() => {})
@@ -57,23 +62,19 @@ export function useLedgerCloudSync() {
       subscribeActiveQuarter(debounced),
     ]
 
-    let networkListener: any = null
+    let networkListener: { remove: () => void } | null = null
     Network.addListener('networkStatusChange', (status) => {
-      if (status.connected) {
-        push()
-      }
-    }).then(listener => {
+      if (status.connected) push()
+    }).then((listener) => {
       networkListener = listener
     })
 
-    const onOnline = () => {
-      push()
-    }
+    const onOnline = () => push()
     window.addEventListener('online', onOnline)
 
     return () => {
       debounced.cancel()
-      unsubs.forEach((u) => u())
+      unsubs.forEach((unsubscribe) => unsubscribe())
       window.removeEventListener('online', onOnline)
       if (networkListener) networkListener.remove()
     }

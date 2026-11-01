@@ -1,8 +1,13 @@
 {
   "private": true,
-  "workspaces": ["frontend"],
+  "workspaces": [
+    "frontend"
+  ],
   "scripts": {
     "build": "npm --workspace frontend run build",
     "dev": "npm --workspace frontend run dev"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.111.0"
   }
 }

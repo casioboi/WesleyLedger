@@ -15,7 +15,7 @@ export function LedgerReviewPage() {
   const routeState = location.state as LedgerRouteState | null
   const payload = routeState && 'reviewPayload' in routeState ? routeState.reviewPayload : null
 
-  const pendingItems = payload?.pendingItems ?? []
+  const pendingItems = useMemo(() => payload?.pendingItems ?? [], [payload])
   const isIncomeBatch = pendingItems[0]?.kind === 'income'
 
   const totalMinor = useMemo(
@@ -134,3 +134,4 @@ function formatDateForReview(iso: string): string {
     day: 'numeric',
   })
 }
+

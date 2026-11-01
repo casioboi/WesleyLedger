@@ -11,10 +11,10 @@ import styles from './ToastHost.module.css'
 
 export type ToastVariant = 'success' | 'info' | 'error'
 
-type ToastState = { id: number; message: string; variant: ToastVariant }
+type ToastState = { id: number; message: string; variant: ToastVariant; title?: string }
 
 type ToastContextValue = {
-  showToast: (message: string, variant?: ToastVariant) => void
+  showToast: (message: string, variant?: ToastVariant, title?: string) => void
 }
 
 const ToastContext = createContext<ToastContextValue | null>(null)
@@ -88,10 +88,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const idRef = useRef(0)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const showToast = useCallback((message: string, variant: ToastVariant = 'success') => {
+  const showToast = useCallback((message: string, variant: ToastVariant = 'success', title?: string) => {
     idRef.current += 1
     const id = idRef.current
-    setToast({ id, message, variant })
+    setToast({ id, message, variant, title })
     if (timerRef.current) clearTimeout(timerRef.current)
     timerRef.current = setTimeout(() => {
       setToast((t) => (t?.id === id ? null : t))
@@ -123,7 +123,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               <ToastGlyph variant={toast.variant} />
             </div>
             <div className={styles.body}>
-              <p className={styles.headline}>{variantHeadline(toast.variant)}</p>
+              <p className={styles.headline}>{toast.title ?? variantHeadline(toast.variant)}</p>
               <p className={styles.message}>{toast.message}</p>
             </div>
             <div className={styles.progressTrack} aria-hidden>

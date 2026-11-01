@@ -1,7 +1,7 @@
 {
   "name": "WesleyLedger",
   "short_name": "WesleyLedger",
-  "description": "Financial stewardship for your society—offline-first ledgers, automated remittances, and audit-ready quarterly reports.",
+  "description": "Financial stewardship for your society: offline-first ledgers, automated remittances, and audit-ready quarterly reports.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

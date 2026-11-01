@@ -12,6 +12,9 @@ import {
 } from '../gri/griOverridesStore'
 import { resolveIncomeGriEligible } from '../lib/griResolve'
 import { useGriEligibility } from '../gri/useGriEligibility'
+import { useLedger } from '../ledger/useLedger'
+import { createLocalDeviceBackup } from '../sync/capacitorFileSystemBackup'
+import { Capacitor } from '@capacitor/core'
 import styles from './PlaceholderPage.module.css'
 import local from './SettingsPage.module.css'
 
@@ -19,6 +22,7 @@ export function SettingsPage() {
   const { profile } = useChurchProfile()
   const { showToast } = useToast()
   const { overrides } = useGriEligibility()
+  const ledgerState = useLedger()
 
   const [draft, setDraft] = useState<Record<string, boolean>>(() => ({
     ...getGriOverridesSnapshot(),
@@ -192,6 +196,32 @@ export function SettingsPage() {
           </Link>
         </div>
       </section>
+
+      {Capacitor.isNativePlatform() && (
+        <section className={local.categories} aria-labelledby="backup-heading" style={{ marginTop: '2rem' }}>
+          <h2 id="backup-heading" className={local.profileTitle}>
+            Device Data Backup
+          </h2>
+          <p className={local.profileHint}>
+            Your data is automatically backed up to a hidden native folder. Use this to manually generate and share a physical backup file (.json) to your Email or Google Drive to be extra safe.
+          </p>
+          <div style={{ marginTop: '1rem' }}>
+            <button
+              type="button"
+              className={local.saveBtn}
+              onClick={() => createLocalDeviceBackup({
+                transactions: ledgerState.transactions,
+                archivedTransactions: ledgerState.archivedTransactions,
+                year: ledgerState.year,
+                quarter: ledgerState.quarter
+              }, true)}
+            >
+              Export Physical Backup
+            </button>
+          </div>
+        </section>
+      )}
     </div>
   )
 }
+
