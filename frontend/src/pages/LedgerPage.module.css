@@ -632,6 +632,73 @@
   color: var(--wl-frost);
 }
 
+.draftAssessmentHint {
+  margin: 0 0 0.65rem;
+  color: var(--wl-muted);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.draftAssessmentTableWrap {
+  overflow-x: auto;
+  margin: 0 -0.3rem 0.65rem;
+}
+
+.draftAssessmentTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.7rem;
+}
+
+.draftAssessmentTable th,
+.draftAssessmentTable td {
+  padding: 0.4rem 0.35rem;
+  border-bottom: 1px solid var(--wl-border);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.draftAssessmentTable thead th {
+  color: var(--wl-subtle);
+  font-weight: 700;
+}
+
+.draftAssessmentTable th:first-child,
+.draftAssessmentTable td:first-child {
+  text-align: left;
+  white-space: normal;
+}
+
+.draftAssessmentTable tbody th {
+  color: var(--wl-frost);
+  font-weight: 500;
+}
+
+.draftAssessmentTotals {
+  margin: 0 0 0.65rem;
+}
+
+.draftAssessmentTotals > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--wl-border);
+  font-size: 0.8rem;
+}
+
+.draftAssessmentTotals dt {
+  color: var(--wl-muted);
+}
+
+.draftAssessmentTotals dd {
+  margin: 0;
+  color: var(--wl-frost);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 .tableSection {
   text-align: left;
 }

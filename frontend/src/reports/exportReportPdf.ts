@@ -6,17 +6,22 @@ const PAGE_WIDTH_IN = 8.27
 const PAGE_HEIGHT_IN = 11.69
 const CSS_PX_PER_IN = 96
 
-async function renderReportPdf(element: HTMLElement) {
+async function renderReportPdf(
+  element: HTMLElement,
+  orientation: 'portrait' | 'landscape' = 'portrait'
+) {
   const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
     import('html2canvas'),
     import('jspdf'),
   ])
+  const pageWidthIn = orientation === 'landscape' ? PAGE_HEIGHT_IN : PAGE_WIDTH_IN
+  const pageHeightIn = orientation === 'landscape' ? PAGE_WIDTH_IN : PAGE_HEIGHT_IN
 
   const clone = element.cloneNode(true) as HTMLElement
   clone.classList.add('wl-pdf-capture')
-  clone.style.width = `${PAGE_WIDTH_IN}in`
-  clone.style.maxWidth = `${PAGE_WIDTH_IN}in`
-  clone.style.minHeight = `${PAGE_HEIGHT_IN}in`
+  clone.style.width = `${pageWidthIn}in`
+  clone.style.maxWidth = `${pageWidthIn}in`
+  clone.style.minHeight = `${pageHeightIn}in`
   clone.style.margin = '0'
   clone.style.position = 'fixed'
   clone.style.left = '-10000px'
@@ -33,12 +38,12 @@ async function renderReportPdf(element: HTMLElement) {
       useCORS: true,
       logging: false,
       backgroundColor: '#ffffff',
-      windowWidth: Math.round(PAGE_WIDTH_IN * CSS_PX_PER_IN),
-      windowHeight: Math.round(PAGE_HEIGHT_IN * CSS_PX_PER_IN),
+      windowWidth: Math.round(pageWidthIn * CSS_PX_PER_IN),
+      windowHeight: Math.round(pageHeightIn * CSS_PX_PER_IN),
     })
 
     const imgData = canvas.toDataURL('image/png', 1.0)
-    const pdf = new jsPDF({ orientation: 'portrait', unit: 'in', format: 'a4' })
+    const pdf = new jsPDF({ orientation, unit: 'in', format: 'a4' })
     const pageWidth = pdf.internal.pageSize.getWidth()
     const pageHeight = pdf.internal.pageSize.getHeight()
     const ratio = Math.min(pageWidth / canvas.width, pageHeight / canvas.height)
@@ -54,8 +59,12 @@ async function renderReportPdf(element: HTMLElement) {
   }
 }
 
-export async function exportReportToPdf(element: HTMLElement, filename: string) {
-  const pdf = await renderReportPdf(element)
+export async function exportReportToPdf(
+  element: HTMLElement,
+  filename: string,
+  orientation: 'portrait' | 'landscape' = 'portrait'
+) {
+  const pdf = await renderReportPdf(element, orientation)
 
   if (Capacitor.isNativePlatform()) {
     const dataUri = pdf.output('datauristring')

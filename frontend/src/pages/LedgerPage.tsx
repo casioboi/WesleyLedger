@@ -13,12 +13,19 @@ import { useLedger } from '../ledger/useLedger'
 import { formatMinorAsGHS, parseGhsInputToMinor } from '../lib/money'
 import { formatQuarterLabel } from '../lib/quarters'
 import { remittanceFromGriMinor } from '../lib/remittance'
+import {
+  buildWeeklyGriAssessment,
+  calendarWeekRange,
+  formatCalendarWeek,
+  isoWeekNumber,
+} from '../lib/weeklyGriAssessment'
 import styles from './LedgerPage.module.css'
 
 export function LedgerPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const {
+    transactions,
     year,
     quarter,
     setQuarter,
@@ -56,6 +63,31 @@ export function LedgerPage() {
     () => remittanceFromGriMinor(totalsInSelectedQuarter.griIncomeMinor),
     [totalsInSelectedQuarter.griIncomeMinor]
   )
+  const weeklyAssessment = useMemo(() => {
+    if (kind !== 'income') return null
+    const { startIso, endIso } = calendarWeekRange(entryDateIso)
+    const draftIncomeByLine = new Map<string, number>()
+    for (const group of incomeLineGroups()) {
+      for (const line of group.lines) {
+        if (!resolveIncomeGriEligible(line.id)) continue
+        const raw = (amountByLine[line.id] ?? '').trim()
+        if (raw === '') continue
+        const incomeMinor = parseGhsInputToMinor(raw)
+        if (incomeMinor === null || incomeMinor <= 0) continue
+        draftIncomeByLine.set(
+          line.id,
+          (draftIncomeByLine.get(line.id) ?? 0) + incomeMinor
+        )
+      }
+    }
+    return buildWeeklyGriAssessment(
+      transactions,
+      startIso,
+      endIso,
+      resolveIncomeGriEligible,
+      draftIncomeByLine
+    )
+  }, [amountByLine, entryDateIso, kind, resolveIncomeGriEligible, transactions])
 
   useEffect(() => {
     const state = location.state as LedgerRouteState | null
@@ -371,6 +403,75 @@ export function LedgerPage() {
               <span>{formatMinorAsGHS(rem.emergencyMinor)} GHS</span>
             </li>
           </ul>
+
+          <h3 className={styles.subhead}>
+            Projected week assessment · ISO Week {isoWeekNumber(entryDateIso)}
+          </h3>
+          <p className={styles.draftAssessmentHint}>{formatCalendarWeek(entryDateIso)}</p>
+          {kind !== 'income' ? (
+            <p className={styles.draftAssessmentHint}>
+              Switch to Income to see the live GRI assessment for this entry.
+            </p>
+          ) : !weeklyAssessment || weeklyAssessment.lines.length === 0 ? (
+            <p className={styles.draftAssessmentHint}>
+              Enter an amount in a GRI-eligible income line to preview this week's assessment.
+            </p>
+          ) : (
+            <>
+              <div className={styles.draftAssessmentTableWrap}>
+                <table className={styles.draftAssessmentTable}>
+                  <thead>
+                    <tr>
+                      <th>Income source</th>
+                      <th>GRI</th>
+                      <th>40%</th>
+                      <th>9%</th>
+                      <th>13%</th>
+                      <th>Emergency</th>
+                      <th>Assessment</th>
+                      <th>Society</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {weeklyAssessment.lines.map((line) => (
+                      <tr key={line.lineId}>
+                        <th scope="row">{line.label}</th>
+                        <td>{formatMinorAsGHS(line.incomeMinor)}</td>
+                        <td>{formatMinorAsGHS(line.connexionalMinor)}</td>
+                        <td>{formatMinorAsGHS(line.dioceseMinor)}</td>
+                        <td>{formatMinorAsGHS(line.circuitMinor)}</td>
+                        <td>{formatMinorAsGHS(line.emergencyMinor)}</td>
+                        <td>{formatMinorAsGHS(line.totalAssessmentMinor)}</td>
+                        <td>{formatMinorAsGHS(line.societyBalanceMinor)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <dl className={styles.draftAssessmentTotals}>
+                <div>
+                  <dt>GRI income</dt>
+                  <dd>{formatMinorAsGHS(weeklyAssessment.totals.incomeMinor)} GHS</dd>
+                </div>
+                <div>
+                  <dt>Total assessment</dt>
+                  <dd>
+                    {formatMinorAsGHS(weeklyAssessment.totals.totalAssessmentMinor)} GHS
+                  </dd>
+                </div>
+                <div>
+                  <dt>Society balance</dt>
+                  <dd>
+                    {formatMinorAsGHS(weeklyAssessment.totals.societyBalanceMinor)} GHS
+                  </dd>
+                </div>
+              </dl>
+              <p className={styles.draftAssessmentHint}>
+                Includes saved income and the amounts currently entered. Emergency is 2% of
+                the remaining 38%; Society balance is what's left after assessment.
+              </p>
+            </>
+          )}
         </aside>
       </div>
     </div>

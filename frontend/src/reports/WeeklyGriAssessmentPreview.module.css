@@ -1,0 +1,153 @@
+.sheet {
+  --ink: #172033;
+  --border: #29364a;
+  box-sizing: border-box;
+  width: 11.69in;
+  max-width: 11.69in;
+  margin: 0 auto;
+  padding: 8mm;
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid #d4dbe5;
+  border-radius: 4px;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 10pt;
+}
+
+.brandBlock {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.7rem;
+}
+
+.church {
+  text-align: center;
+}
+
+.brandMain,
+.brandSub,
+.society {
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.brandMain,
+.society {
+  font-weight: 700;
+}
+
+.brandMain {
+  font-size: 14pt;
+}
+
+.brandSub {
+  font-size: 11pt;
+  font-weight: 600;
+}
+
+.society {
+  margin-top: 0.25rem;
+  font-size: 12pt;
+}
+
+.period {
+  display: grid;
+  gap: 0.2rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.period strong {
+  font-size: 12pt;
+}
+
+.tableWrap {
+  width: 100%;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.table th,
+.table td {
+  border: 1px solid var(--border);
+  padding: 0.45rem 0.4rem;
+}
+
+.table thead th {
+  background: #fff;
+  color: #172033;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table th:first-child,
+.table td:first-child {
+  width: 23%;
+  text-align: left;
+}
+
+.table td:not(:first-child) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.empty {
+  height: 5rem;
+  text-align: center !important;
+  color: #475569;
+}
+
+.totalRow {
+  background: #e8f4f8;
+  font-weight: 700;
+}
+
+.note {
+  margin: 0.8rem 0 1.2rem;
+  color: #334155;
+  font-size: 9pt;
+  line-height: 1.4;
+}
+
+.signatures {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.7fr;
+  gap: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--border);
+  font-size: 9pt;
+}
+
+@media print {
+  .sheet {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 9pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.35rem;
+  }
+
+  .brandBlock {
+    margin-bottom: 0.65rem;
+  }
+}

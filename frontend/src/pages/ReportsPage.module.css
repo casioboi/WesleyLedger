@@ -49,6 +49,38 @@
   gap: 0.5rem;
 }
 
+.weekPicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.weekDate {
+  display: grid;
+  gap: 0.25rem;
+  color: var(--wl-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.weekDate input {
+  min-height: 2.5rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--wl-border);
+  border-radius: 10px;
+  background: var(--wl-input-bg);
+  color: var(--wl-frost);
+  font: inherit;
+}
+
+.weekLabel {
+  align-self: center;
+  color: var(--wl-frost);
+  font-weight: 700;
+}
+
 .btnPrimary,
 .btnSecondary {
   padding: 0.55rem 1rem;
@@ -100,4 +132,23 @@
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   padding-bottom: 1rem;
+}
+
+@media print {
+  .previewContainer {
+    width: auto;
+    overflow: visible;
+    padding: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .weekPicker {
+    align-items: stretch;
+  }
+
+  .weekDate,
+  .weekLabel {
+    width: 100%;
+  }
 }
